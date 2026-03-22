@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Emerging Technologies in CPE — Quiz ✦</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#130818;--surface:#1e0e26;--surface2:#2a1338;--border:#5b2d7a;--accent:#f472b6;--accent2:#c084fc;--accent3:#fb7185;--text:#fdf4ff;--muted:#a78bba;--correct:#86efac;--wrong:#fca5a5;--correct-bg:#052e16;--wrong-bg:#300a0a;--gold:#fbbf24;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;overflow-x:hidden;}
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(80px);opacity:0.18;}
+.orb1{width:600px;height:600px;background:#be185d;top:-200px;left:-200px;}
+.orb2{width:500px;height:500px;background:#7c3aed;bottom:-150px;right:-150px;}
+.orb3{width:350px;height:350px;background:#db2777;top:45%;left:55%;}
+.screen{display:none;width:100%;max-width:760px;position:relative;z-index:1;animation:fadeUp 0.45s cubic-bezier(.22,.68,0,1.2);}
+.screen.active{display:flex;flex-direction:column;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+.eyebrow{font-size:11px;letter-spacing:4px;color:var(--accent);text-transform:uppercase;margin-bottom:1.2rem;font-weight:600;}
+.big-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,6vw,3.8rem);font-weight:900;line-height:1.05;margin-bottom:0.8rem;}
+.big-title em{font-style:italic;color:var(--accent);}
+.sub-text{font-size:0.95rem;color:var(--muted);line-height:1.7;max-width:500px;margin-bottom:1.5rem;}
+.divider{width:60px;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;margin-bottom:1.5rem;}
+.pills{display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:1.5rem;}
+.pill{background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:0.45rem 1.1rem;font-size:12px;color:var(--muted);}
+.pill b{color:var(--accent2);}
+.field-label{font-size:13px;color:var(--muted);margin-bottom:0.45rem;letter-spacing:0.5px;display:block;}
+.text-input{width:100%;max-width:380px;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:0.85rem 1.2rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:1rem;outline:none;transition:border-color 0.2s;margin-bottom:1.5rem;display:block;}
+.text-input:focus{border-color:var(--accent);}
+.text-input::placeholder{color:var(--muted);}
+.btn-main{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0a0010;border:none;border-radius:12px;padding:1rem 2.5rem;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;align-self:flex-start;}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(244,114,182,0.35);}
+.btn-main:active{transform:translateY(0);}
+.btn-main:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.btn-ghost{background:transparent;border:1.5px solid var(--accent2);color:var(--accent2);border-radius:10px;padding:0.75rem 1.5rem;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;transition:background 0.15s,color 0.15s;}
+.btn-ghost:hover{background:var(--accent2);color:#0a0010;}
+.qheader{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;gap:0.75rem;flex-wrap:wrap;}
+.part-tag{font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;font-weight:600;}
+.q-of{font-size:13px;color:var(--muted);}
+.live-score{font-size:13px;color:var(--muted);}
+.live-score b{color:var(--accent2);font-weight:700;}
+.player-chip{font-size:12px;color:var(--accent2);background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:4px 12px;}
+.prog-track{width:100%;height:4px;background:var(--surface2);border-radius:2px;margin-bottom:2rem;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;transition:width 0.4s ease;}
+.qcard{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;margin-bottom:1.25rem;position:relative;overflow:hidden;}
+.qcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));}
+.qnum{font-size:11px;color:var(--muted);margin-bottom:0.8rem;letter-spacing:1px;}
+.qtext{font-size:1.05rem;font-weight:600;line-height:1.55;}
+.opts{display:flex;flex-direction:column;gap:0.65rem;}
+.opt{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:0.9rem 1.2rem;display:flex;align-items:center;gap:1rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--text);text-align:left;transition:border-color 0.15s,background 0.15s,transform 0.12s;}
+.opt:hover:not(:disabled){border-color:var(--accent);background:var(--surface2);transform:translateX(5px);}
+.opt:disabled{cursor:default;}
+.okey{width:30px;height:30px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--surface2);color:var(--muted);font-size:11px;font-weight:700;transition:background 0.15s,color 0.15s;}
+.opt.correct{border-color:#4ade80;background:var(--correct-bg);}
+.opt.correct .okey{background:#4ade80;color:#000;}
+.opt.wrong{border-color:#f87171;background:var(--wrong-bg);}
+.opt.wrong .okey{background:#f87171;color:#fff;}
+.exp{margin-top:1.1rem;padding:0.9rem 1.1rem;background:var(--surface2);border-left:3px solid var(--accent2);border-radius:0 10px 10px 0;font-size:0.86rem;color:var(--muted);line-height:1.65;display:none;}
+.exp.show{display:block;}
+.exp b{color:var(--text);}
+.btn-next{background:transparent;border:1.5px solid var(--accent);color:var(--accent);border-radius:10px;padding:0.75rem 2rem;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;align-self:flex-end;margin-top:0.5rem;transition:background 0.15s,color 0.15s,transform 0.1s;display:none;}
+.btn-next.show{display:block;}
+.btn-next:hover{background:var(--accent);color:#0a0010;transform:translateY(-1px);}
+.ecard{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;margin-bottom:1.25rem;position:relative;overflow:hidden;}
+.ecard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent2),var(--accent3),var(--accent));}
+.rubric-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:0.85rem 1rem;margin-bottom:1rem;font-size:0.82rem;color:var(--muted);line-height:1.6;}
+.rubric-box b{color:var(--accent);}
+.eq-text{font-size:1.05rem;font-weight:600;line-height:1.55;margin-bottom:1rem;}
+.essay-ta{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:1rem 1.2rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.95rem;line-height:1.7;resize:vertical;min-height:140px;outline:none;transition:border-color 0.2s;margin-bottom:1rem;display:block;}
+.essay-ta:focus{border-color:var(--accent2);}
+.essay-ta::placeholder{color:var(--muted);}
+.essay-ta:disabled{opacity:0.6;cursor:default;}
+.ai-box{margin-top:1.1rem;padding:1.25rem;background:var(--surface2);border-radius:14px;border:1px solid var(--border);display:none;}
+.ai-box.show{display:block;}
+.stars-row{display:flex;gap:6px;align-items:center;margin-bottom:0.75rem;}
+.snum{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--accent);margin-right:0.5rem;}
+.ai-text{font-size:0.88rem;color:var(--muted);line-height:1.7;}
+.ai-text b{color:var(--text);}
+.toggle-model{background:none;border:none;color:var(--accent2);font-size:13px;cursor:pointer;text-decoration:underline;margin-top:0.75rem;font-family:'DM Sans',sans-serif;display:block;}
+.model-block{margin-top:0.75rem;padding:1rem;background:var(--bg);border-radius:10px;font-size:0.86rem;color:var(--muted);line-height:1.7;display:none;}
+.model-block.show{display:block;}
+.model-block b{color:var(--text);}
+.loading{display:none;align-items:center;gap:10px;padding:0.75rem 0;}
+.loading.show{display:flex;}
+.dot{width:9px;height:9px;border-radius:50%;animation:bop 1.2s infinite;}
+.dot:nth-child(1){background:var(--accent);}
+.dot:nth-child(2){background:var(--accent2);animation-delay:0.2s;}
+.dot:nth-child(3){background:var(--accent3);animation-delay:0.4s;}
+@keyframes bop{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-9px);}}
+.load-text{font-size:13px;color:var(--muted);}
+.lb-wrap{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:1.75rem;margin-bottom:1.5rem;}
+.lb-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
+.lb-hdr h2{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;}
+.lb-hdr h2 em{font-style:italic;color:var(--accent);}
+.lb-tbl{width:100%;border-collapse:collapse;}
+.lb-tbl th{font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;padding:0.5rem 0.75rem;text-align:left;border-bottom:1px solid var(--border);}
+.lb-tbl td{padding:0.75rem 0.75rem;border-bottom:1px solid rgba(91,45,122,0.25);font-size:0.9rem;vertical-align:middle;}
+.rank-dot{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:var(--surface2);color:var(--muted);}
+.r1{background:rgba(251,191,36,0.15);color:#fbbf24;}
+.r2{background:rgba(192,132,252,0.15);color:#c084fc;}
+.r3{background:rgba(244,114,182,0.15);color:#f472b6;}
+.lb-empty{text-align:center;padding:2rem;color:var(--muted);font-size:0.9rem;}
+.lb-err{text-align:center;padding:1rem;color:#f87171;font-size:0.85rem;line-height:1.6;}
+.res-score-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;text-align:center;margin:1.25rem 0;position:relative;overflow:hidden;}
+.res-score-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));}
+.big-score{font-family:'Playfair Display',serif;font-size:4.5rem;font-weight:900;color:var(--accent);line-height:1;}
+.score-den{font-size:1.5rem;color:var(--muted);}
+.score-pct{font-size:1rem;color:var(--muted);margin-top:0.3rem;}
+.grade-tag{display:inline-block;margin-top:1rem;padding:0.5rem 1.25rem;border-radius:100px;font-weight:600;font-size:0.9rem;}
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.5rem;}
+.sbox{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.1rem;text-align:center;}
+.sval{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;}
+.sval.g{color:var(--correct);}
+.sval.r{color:var(--wrong);}
+.sval.p{color:var(--accent2);}
+.slbl{font-size:12px;color:var(--muted);margin-top:4px;}
+.missed-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1.25rem;}
+.missed-wrap h3{font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:1rem;}
+.mitem{padding:0.55rem 0;border-bottom:1px solid rgba(91,45,122,0.3);font-size:0.88rem;color:var(--muted);display:flex;gap:0.5rem;}
+.mitem:last-child{border-bottom:none;}
+.mnum{color:var(--wrong);font-weight:700;flex-shrink:0;}
+.btn-row{display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:0.5rem;}
+@media(max-width:500px){.stats3{grid-template-columns:1fr 1fr;}.qheader{gap:0.4rem;}}
+</style>
+</head>
+<body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<!-- SPLASH -->
+<div class="screen active" id="s-splash">
+  <div class="eyebrow">BulSU · Engr. Cruz · Week 12</div>
+  <h1 class="big-title">Huawei Cloud<br><em>Compute Quiz</em></h1>
+  <div class="divider"></div>
+  <p class="sub-text">30 multiple-choice + 5 essay questions. All questions are based strictly on your Week 12 PDF. Questions shuffle every run. Scores sync to the Firebase leaderboard.</p>
+  <div class="pills">
+    <span class="pill">Part 1: <b>30 MCQ</b></span>
+    <span class="pill">Part 2: <b>5 Essays</b></span>
+    <span class="pill"><b>AI graded</b> 0–3 pts each</span>
+    <span class="pill"><b>Shuffled</b> every run</span>
+    <span class="pill"><b>Firebase</b> leaderboard</span>
+  </div>
+  <label class="field-label" for="pname">Your name</label>
+  <input class="text-input" id="pname" type="text" placeholder="e.g. Maria Santos" maxlength="30"/>
+  <div class="btn-row" style="margin-bottom:1rem;">
+    <button class="btn-main" onclick="startGame()">Start Quiz ✦</button>
+    <button class="btn-ghost" onclick="goLB()">View Leaderboard</button>
+  </div>
+</div>
+
+<!-- MCQ -->
+<div class="screen" id="s-mcq">
+  <div class="qheader">
+    <span class="part-tag">Part 1 · MCQ</span>
+    <span class="player-chip" id="mcq-chip"></span>
+    <span class="q-of" id="mcq-of">1 / 30</span>
+    <span class="live-score">Score: <b id="mcq-sc">0</b></span>
+  </div>
+  <div class="prog-track"><div class="prog-fill" id="mcq-prog" style="width:0%"></div></div>
+  <div class="qcard">
+    <div class="qnum" id="qnum"></div>
+    <div class="qtext" id="qtext"></div>
+    <div class="exp" id="qexp"></div>
+  </div>
+  <div class="opts" id="opts"></div>
+  <button class="btn-next" id="btn-next" onclick="nextQ()">Next →</button>
+</div>
+
+<!-- ESSAY -->
+<div class="screen" id="s-essay">
+  <div class="qheader">
+    <span class="part-tag">Part 2 · Essay</span>
+    <span class="player-chip" id="essay-chip"></span>
+    <span class="q-of" id="essay-of">1 / 5</span>
+    <span class="live-score">Essay pts: <b id="essay-sc">0</b></span>
+  </div>
+  <div class="prog-track"><div class="prog-fill" id="essay-prog" style="width:0%"></div></div>
+  <div class="ecard">
+    <div class="qnum" id="eqnum">Essay 1 of 5</div>
+    <div class="rubric-box">
+      <b>Scoring rubric (0–3):</b><br>
+      0 — No answer or fails to meet the basic requirement<br>
+      1 — Lacks several details; some information is inaccurate<br>
+      2 — Missing slight details; most information is accurate<br>
+      3 — Answer is complete and all information is accurate
+    </div>
+    <div class="eq-text" id="eqtext"></div>
+    <textarea class="essay-ta" id="eta" placeholder="Answer in 1–3 sentences. The AI will grade your response 0–3 based on accuracy and completeness…"></textarea>
+    <button class="btn-main" id="btn-sub" onclick="submitEssay()">Submit for AI Grading ✦</button>
+    <div class="loading" id="loading">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <span class="load-text">Grading your answer…</span>
+    </div>
+    <div class="ai-box" id="aibox">
+      <div class="stars-row" id="starsrow"></div>
+      <div class="ai-text" id="aitext"></div>
+      <button class="toggle-model" onclick="toggleModel(this)">Show model answer</button>
+      <div class="model-block" id="modelblock"></div>
+    </div>
+    <button class="btn-next show" id="btn-enext" style="display:none;margin-top:1rem;" onclick="nextEssay()">Next Essay →</button>
+  </div>
+</div>
+
+<!-- LEADERBOARD -->
+<div class="screen" id="s-lb">
+  <h2 class="big-title" style="margin-bottom:0.4rem;">Top <em>Scores</em></h2>
+  <p class="sub-text" style="margin-bottom:1.5rem;">Live scores synced from Firebase.</p>
+  <div class="lb-wrap">
+    <div class="lb-hdr">
+      <h2><em>Leaderboard</em></h2>
+      <button class="btn-ghost" onclick="loadLB()" style="padding:0.5rem 1rem;font-size:13px;">Refresh</button>
+    </div>
+    <div id="lb-body"><p class="lb-empty">Loading scores…</p></div>
+  </div>
+  <button class="btn-main" onclick="showS('s-splash')">Back to Quiz</button>
+</div>
+
+<!-- RESULTS -->
+<div class="screen" id="s-results">
+  <div class="eyebrow">Quiz Complete ✦</div>
+  <h2 class="big-title">Your <em>Results</em></h2>
+  <div class="res-score-card">
+    <div class="big-score" id="rbig"></div>
+    <div class="score-pct" id="rpct"></div>
+    <div class="grade-tag" id="rgrade"></div>
+  </div>
+  <div class="stats3">
+    <div class="sbox"><div class="sval g" id="rcor"></div><div class="slbl">MCQ correct</div></div>
+    <div class="sbox"><div class="sval r" id="rwrong"></div><div class="slbl">MCQ wrong</div></div>
+    <div class="sbox"><div class="sval p" id="ressay"></div><div class="slbl">Essay pts (max 15)</div></div>
+  </div>
+  <div class="missed-wrap">
+    <h3>Questions you missed</h3>
+    <div id="missed"></div>
+  </div>
+  <div class="btn-row">
+    <button class="btn-main" onclick="restart()">Play Again ✦</button>
+    <button class="btn-ghost" onclick="goLB()">Leaderboard</button>
+  </div>
+</div>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyB_LuVB4AfiBXHbA3spNXSAlum12-bMg68",
+  authDomain: "emtech-8384c.firebaseapp.com",
+  projectId: "emtech-8384c",
+  storageBucket: "emtech-8384c.firebasestorage.app",
+  messagingSenderId: "971709817948",
+  appId: "1:971709817948:web:bda99e63585d6457b83299"
+};
+let db=null;
+try{const app=initializeApp(firebaseConfig);db=getFirestore(app);}catch(e){console.warn('Firebase:',e);}
+window._fbSave=async(name,total,mcq,essay)=>{
+  if(!db)return;
+  try{await addDoc(collection(db,"scores"),{name,total,mcq,essay,createdAt:serverTimestamp()});}catch(e){console.warn(e);}
+};
+window._fbLoad=async()=>{
+  const el=document.getElementById('lb-body');
+  if(!db){el.innerHTML='<p class="lb-err">Firebase not connected.</p>';return;}
+  el.innerHTML='<p class="lb-empty">Loading…</p>';
+  try{
+    const q=query(collection(db,"scores"),orderBy("total","desc"),limit(20));
+    const snap=await getDocs(q);
+    if(snap.empty){el.innerHTML='<p class="lb-empty">No scores yet — be the first!</p>';return;}
+    let rows='',rank=1;
+    snap.forEach(doc=>{
+      const d=doc.data();
+      const rc=rank===1?'r1':rank===2?'r2':rank===3?'r3':'';
+      rows+=`<tr><td><span class="rank-dot ${rc}">${rank}</span></td><td style="font-weight:500">${d.name||'Anonymous'}</td><td style="color:var(--accent);font-weight:600">${d.total}<span style="color:var(--muted);font-weight:400"> /45</span></td><td style="color:var(--muted)">${d.mcq}/30</td><td style="color:var(--muted)">${d.essay}/15</td></tr>`;
+      rank++;
+    });
+    el.innerHTML=`<table class="lb-tbl"><thead><tr><th>#</th><th>Player</th><th>Total</th><th>MCQ</th><th>Essay</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }catch(e){el.innerHTML='<p class="lb-err">Could not load scores. Check Firestore rules.</p>';}
+};
+</script>
+
+<script>
+// ══ MCQ — exam-paper style, all answers from PDF ══
+const ALL_MCQ = [
+  // ECS
+  {q:"What is Elastic Cloud Server (ECS) in Huawei Cloud?",opts:["A dedicated physical server with no hypervisor","An IaaS compute service that provides scalable virtual servers in the cloud","A serverless platform for running code without servers","A container orchestration service based on Kubernetes"],ans:1,exp:"<b>ECS</b> is Huawei Cloud's IaaS compute service that provides scalable virtual servers, allowing users to create VMs on demand and select CPU, memory, storage, and OS."},
+  {q:"Which layer does ECS represent in cloud architecture?",opts:["Networking layer","Storage layer","Compute layer","Virtualization layer"],ans:2,exp:"ECS represents the <b>compute layer</b> in IaaS. Compute is the core processing layer; storage stores data; networking connects services."},
+  {q:"ECS instances are deployed across multiple Availability Zones (AZs). What happens if one AZ becomes faulty?",opts:["All ECS instances in the region go down","Other AZs in the same region are not affected","The entire cloud service is suspended","The system automatically migrates to another region"],ans:1,exp:"ECSs are deployed in multiple AZs connected through an intranet. <b>If one AZ becomes faulty, other AZs in the same region will not be affected.</b>"},
+  {q:"Which Huawei Cloud service allows you to build a dedicated network, configure subnets and security groups, and communicate with external networks via EIP?",opts:["EVS","IMS","VPC (Virtual Private Cloud)","Cloud Eye"],ans:2,exp:"<b>VPC (Virtual Private Cloud)</b> lets you build a dedicated network, configure subnets and security groups, and enable communication with the external network via an EIP with assigned bandwidth."},
+  {q:"Which Huawei Cloud service is used with ECS to create images and enable rapid service deployment?",opts:["CBR","Cloud Eye","EVS","IMS (Image Management Service)"],ans:3,exp:"<b>IMS (Image Management Service)</b> allows you to create images for ECSs, or create ECSs using private images for rapid service deployment."},
+  {q:"Which Huawei Cloud service provides storage for ECS, while its companion provides data backup and recovery?",opts:["OBS and VPC","EVS and VBS/CBR","IMS and Cloud Eye","ELB and DeH"],ans:1,exp:"<b>EVS (Elastic Volume Service)</b> provides storage and <b>VBS/CBR (Volume Backup Service / Cloud Backup and Recovery)</b> provides data backup and recovery functions for ECS."},
+  {q:"Which service monitors ECS resource usage to help ensure performance, reliability, and availability?",opts:["IMS","VBS","Cloud Eye","VPC"],ans:2,exp:"<b>Cloud Eye</b> is the key monitoring service for ECS — it tracks resource usage such as CPU, memory, network traffic, and disk I/O."},
+  {q:"Under the ECS Shared Responsibility Model, who is responsible for securing the OS and applications?",opts:["Huawei Cloud","The user","Third-party vendors","Both Huawei and the user"],ans:1,exp:"Under the <b>Shared Responsibility Model</b>: Huawei secures the infrastructure. <b>The user is responsible</b> for OS configuration, application installation, and security patches."},
+  {q:"Which ECS security feature acts as a firewall to control inbound and outbound traffic?",opts:["Key pair authentication","IAM integration","Security groups","Encrypted disks"],ans:2,exp:"<b>Security groups</b> act as firewall rules that control inbound and outbound traffic for ECS instances."},
+  {q:"Which ECS instance type is recommended for website R&D, testing, and small-scale databases?",opts:["Memory-optimized","GPU-accelerated","Disk-intensive","General-computing"],ans:3,exp:"<b>General-computing ECSs</b> provide a balance of compute, memory, and network resources — appropriate for medium-workload applications like website R&D and small-scale databases."},
+  {q:"Which ECS instance type is recommended for precision marketing, e-commerce, and mobile apps?",opts:["General-computing","Compute-optimized","Memory-optimized","Disk-intensive"],ans:2,exp:"<b>Memory-optimized ECSs</b> are recommended for e-commerce and precision marketing — they feature large memory, ultra-high I/O EVS disks, and appropriate bandwidths."},
+  {q:"Which ECS instance type is recommended for graphics rendering and engineering drawing?",opts:["Disk-intensive","Memory-optimized","GPU-accelerated (GACS)","General-computing"],ans:2,exp:"<b>GPU-accelerated ECSs (GACS)</b> are designed for graphics rendering and engineering drawing, providing cost-effective graphics acceleration and high GPU performance."},
+  {q:"Which ECS instance type is recommended for MapReduce and Hadoop workloads?",opts:["Memory-optimized","GPU-accelerated","General-computing","Disk-intensive"],ans:3,exp:"<b>Disk-intensive ECSs</b> are suitable for MapReduce and Hadoop — they handle high-performance sequential read/write on ultra-large datasets in local storage."},
+  {q:"A cloud engineer evaluates ECS for a project. Which of the following is NOT one of the five engineering evaluation factors listed in the PDF?",opts:["Performance","Scalability","Brand reputation","Security"],ans:2,exp:"The five ECS engineering evaluation factors are: <b>Performance, Scalability, Availability, Security, and Cost</b>. Brand reputation is not listed."},
+  // BMS
+  {q:"What is Bare Metal Server (BMS) in Huawei Cloud?",opts:["A virtual machine on a shared physical host","A dedicated physical server in the cloud without a virtualization layer","A container orchestration service","A serverless compute platform"],ans:1,exp:"<b>BMS</b> provides dedicated physical servers in the cloud environment, without a virtualization layer between the hardware and the operating system."},
+  {q:"How does BMS differ from ECS?",opts:["BMS uses a shared hypervisor; ECS does not","BMS runs directly on physical hardware without a hypervisor; ECS is a virtual machine","BMS is cheaper than ECS","BMS cannot integrate with VPC or EVS"],ans:1,exp:"<b>BMS runs directly on physical hardware with no hypervisor</b>. ECS is a virtual machine that uses a shared hypervisor. ECS = Virtual machine; BMS = Physical server delivered as a cloud service."},
+  {q:"Which of the following is a core characteristic of BMS architecture?",opts:["Shared hypervisor across tenants","Multi-tenant hardware","No hypervisor layer with direct OS-to-hardware interaction","Automatic horizontal scaling"],ans:2,exp:"BMS core characteristics include: dedicated physical CPU/memory/storage, <b>no hypervisor layer</b>, and <b>direct OS-to-hardware interaction</b>."},
+  {q:"Which BMS key feature eliminates the 'noisy neighbor' effect?",opts:["Elastic provisioning","High-speed network interfaces","Dedicated physical resources allocated to one tenant","Integration with VPC"],ans:2,exp:"BMS provides <b>dedicated physical resources</b> — the entire server is allocated to one tenant, eliminating the 'noisy neighbor' effect and ensuring predictable performance."},
+  {q:"BMS is ideal for High Performance Computing (HPC). Which of the following is a reason stated in the PDF?",opts:["BMS uses shared memory across tenants","BMS provides direct CPU and GPU access with high-speed network interfaces","BMS is the cheapest Huawei Cloud compute option","BMS requires no OS management"],ans:1,exp:"BMS is ideal for HPC because it provides <b>direct CPU and GPU access</b> and <b>high-speed network interfaces</b> — enabling AI/ML, big data analytics, scientific simulations, and financial modeling."},
+  {q:"According to the PDF, when should you NOT use BMS?",opts:["When workloads require direct hardware access","When virtualization overhead is unacceptable","When workloads are small or variable and cost efficiency is the priority","When hardware isolation is required for compliance"],ans:2,exp:"Avoid BMS when: <b>workloads are small or variable, cost efficiency is priority, horizontal scaling is needed frequently, and virtualization is acceptable</b>. ECS is more appropriate in those cases."},
+  // AS
+  {q:"What is Auto Scaling (AS) in Huawei Cloud?",opts:["A service that manually adds servers when requested","A service that automatically adjusts the number of cloud servers based on workload demand","A monitoring tool that tracks CPU and memory usage","A load balancer that distributes traffic across ECS instances"],ans:1,exp:"<b>Auto Scaling (AS)</b> is a Huawei Cloud service that automatically adjusts the number of ECS or BMS instances based on workload demand, monitoring metrics, predefined scaling rules, and scheduled events."},
+  {q:"Huawei Auto Scaling primarily focuses on which type of scaling?",opts:["Vertical scaling (scale up/down)","Horizontal scaling (add/remove instances)","Storage scaling","Network bandwidth scaling"],ans:1,exp:"Huawei AS primarily focuses on <b>horizontal scaling</b> — automatically adding or removing ECS/BMS instances. Vertical scaling (increasing CPU/RAM of one server) requires a reboot and is less flexible."},
+  {q:"Which AS component defines the minimum and maximum number of instances in a group?",opts:["Scaling Configuration","Scaling Policy","Cloud Eye","Scaling Group"],ans:3,exp:"The <b>Scaling Group</b> is a logical collection of ECS or BMS instances that share the same configuration and scaling rules. It defines the minimum and maximum number of instances."},
+  {q:"Which AS component serves as a template defining instance type, OS image, disk size, and network settings for new servers?",opts:["Scaling Group","Scaling Policy","Scaling Configuration","Cloud Eye"],ans:2,exp:"The <b>Scaling Configuration</b> defines the instance type, OS image, disk size, and network settings — it is the template used when AS launches new instances."},
+  {q:"An AS policy is set to add instances every 8 AM and remove them every 10 PM. Which policy type is this?",opts:["Alarm-based scaling","Manual scaling","Scheduled scaling","Predictive scaling"],ans:2,exp:"<b>Scheduled scaling</b> is triggered at specific times — for example, increasing capacity every 8 AM and decreasing every 10 PM."},
+  {q:"Which AS policy type is triggered when CPU usage exceeds 80% as detected by Cloud Eye?",opts:["Scheduled scaling","Manual scaling","Alarm-based scaling","Horizontal scaling"],ans:2,exp:"<b>Alarm-based scaling</b> is triggered when a metric exceeds a threshold — for example, CPU > 80% triggers AS to add 2 instances. Cloud Eye detects these metrics."},
+  {q:"Which service does Auto Scaling integrate with to distribute traffic and automatically register new instances?",opts:["VPC","IMS","Cloud Eye","ELB (Elastic Load Balancer)"],ans:3,exp:"AS integrates with <b>ELB (Elastic Load Balancer)</b> to distribute traffic across instances, automatically register new instances added by AS, and remove terminated ones — ensuring high availability and no downtime."},
+  // IMS
+  {q:"What does an IMS image contain?",opts:["Only the operating system","Operating system, pre-installed software, configuration settings, drivers, and patches","Only application data","Only network configuration files"],ans:1,exp:"An IMS image is a template that contains: <b>operating system, pre-installed software, configuration settings, drivers, and patches</b>. When launching ECS, the image is copied to create the system disk."},
+  {q:"Which IMS image type is provided by Huawei Cloud with a pre-tested standard OS like Linux or Windows?",opts:["Private image","Shared image","Marketplace image","Public image"],ans:3,exp:"<b>Public images</b> are provided by Huawei Cloud with pre-installed standard OSes (Linux, Windows) that have been thoroughly tested to provide secure and stable services."},
+  {q:"Which IMS image type is created by users, customized with their own OS and software, and stored in their own account?",opts:["Public image","Marketplace image","Private image","Shared image"],ans:2,exp:"<b>Private images</b> are created by users with a customized OS and software. They are stored in the user's account and used as enterprise standard server templates."},
+  {q:"Which IMS image type is shared between different Huawei Cloud accounts, useful for multi-team environments?",opts:["Public image","Private image","Marketplace image","Shared image"],ans:3,exp:"<b>Shared images</b> are shared between different Huawei Cloud accounts — ideal for multi-team or multi-department environments that need a common image."},
+  {q:"Where does IMS store multiple copies of image files to ensure data reliability and durability?",opts:["EVS","ECS local disk","OBS (Object Storage Service)","VPC"],ans:2,exp:"Multiple copies of IMS image files are stored in <b>OBS (Object Storage Service)</b>, which provides excellent data reliability and durability."},
+  {q:"Which encryption service is used by IMS to secure private images?",opts:["IAM","VPC ACLs","KMS (Key Management Service)","Security groups"],ans:2,exp:"Private images can be encrypted for data security using <b>envelope encryption provided by KMS (Key Management Service)</b>."},
+  // CCE
+  {q:"What is Cloud Container Engine (CCE) in Huawei Cloud?",opts:["A virtual machine management service","A managed container orchestration service based on Kubernetes","A serverless computing platform","A dedicated physical server service"],ans:1,exp:"<b>CCE</b> is Huawei Cloud's managed container orchestration service based on Kubernetes. It enables users to deploy containerized applications, manage container clusters, automate scaling and recovery, and simplify microservices architecture."},
+  {q:"What is a Pod in CCE/Kubernetes?",opts:["A physical server in the cluster","A collection of worker nodes","The smallest deployable unit that contains one or more related containers sharing storage and network","A stable network endpoint for microservices"],ans:2,exp:"A <b>Pod</b> is the smallest deployable unit in Kubernetes — it consists of one or more related containers that share the same storage and network space."},
+  {q:"What is the role of the Master Node in CCE architecture?",opts:["Running application containers and hosting pods","Storing image data for containers","Scheduling containers, monitoring cluster state, and managing API calls","Providing persistent storage for the cluster"],ans:2,exp:"The <b>Master Node (Control Plane)</b> is responsible for scheduling containers, monitoring cluster state, and managing API calls. Worker nodes run the actual application containers."},
+  {q:"For high availability, how many master nodes does CCE deploy and where?",opts:["1 node in a single AZ","2 nodes in the same AZ","3 nodes in different AZs","5 nodes across different regions"],ans:2,exp:"CCE deploys <b>3 master nodes in different Availability Zones</b> for the cluster control plane, ensuring service continuity even if one AZ fails."},
+  {q:"Which of the following is a CCE advantage related to AI computing performance?",opts:["CCE reduces storage costs by 50%","AI computing is 3x to 5x better with NUMA BMSs and high-speed InfiniBand network cards","CCE replaces the need for any networking configuration","CCE provides free GPU resources"],ans:1,exp:"According to the PDF, <b>AI computing is 3x to 5x better with NUMA BMSs and high-speed InfiniBand network cards</b> in CCE."},
+  // DeH
+  {q:"What is Dedicated Host (DeH) in Huawei Cloud?",opts:["A virtual machine on a shared physical host","A physical server with no hypervisor, same as BMS","A physically isolated host dedicated to a single tenant where multiple ECS instances can be deployed","A container cluster node"],ans:2,exp:"<b>DeH</b> is a physically isolated host dedicated to a single tenant. Unlike BMS, the hypervisor is present but not shared across customers — multiple ECS instances run on the same physical host for that one tenant."},
+  {q:"In the DeH comparison table from the PDF, which service has 'No' for physical sharing, 'Yes' for virtualization, and 'Yes' for multiple VMs?",opts:["ECS","BMS","FunctionGraph","Dedicated Host (DeH)"],ans:3,exp:"From the PDF comparison table: <b>DeH</b> has No physical sharing, Yes virtualization, and Yes multiple VMs — distinguishing it from both ECS (shared) and BMS (no virtualization, single OS)."},
+  // FunctionGraph
+  {q:"What is FunctionGraph in Huawei Cloud?",opts:["A virtual machine service for running applications","A serverless computing service (FaaS) that runs code without provisioning or managing servers","A container orchestration service","A dedicated physical server service"],ans:1,exp:"<b>FunctionGraph</b> is Huawei Cloud's serverless computing service — a Function-as-a-Service (FaaS) platform where you upload code, the cloud executes it on demand, and you pay only for execution time."},
+  {q:"What does 'serverless' mean in the context of FunctionGraph?",opts:["There are literally no servers involved","You do not manage servers; infrastructure is abstracted and scaling is automatic","The service is always free of charge","You must provision servers manually before running functions"],ans:1,exp:"'Serverless' does NOT mean there are no servers. It means <b>you do not manage servers, infrastructure is abstracted, and scaling is automatic</b>. FunctionGraph focuses on event-driven execution and pay-per-execution pricing."},
+  {q:"Which of the following programming languages is supported by FunctionGraph according to the PDF?",opts:["Ruby and Swift","Kotlin and Rust","Node.js, Python, Java, C#, PHP, and Go","Only Python and Java"],ans:2,exp:"FunctionGraph supports: <b>Node.js, Python, Java, C#, PHP, and Go</b>."},
+  {q:"FunctionGraph is interconnected with which service to view run logs of functions?",opts:["Cloud Eye","AOM","LTS (Log Tank Service)","VPC"],ans:2,exp:"FunctionGraph is interconnected with <b>LTS (Log Tank Service)</b> to view run logs of functions."},
+  {q:"FunctionGraph is interconnected with which service to view graphical monitoring information?",opts:["Cloud Eye","LTS","VPC","AOM (Application Operations Management)"],ans:3,exp:"FunctionGraph is interconnected with <b>AOM (Application Operations Management)</b> to view graphical monitoring information."},
+  {q:"FunctionGraph billing is based on which of the following?",opts:["Number of servers provisioned per hour","Number of containers running","Number of function execution requests and execution duration","GB of storage consumed per month"],ans:2,exp:"FunctionGraph billing is based on <b>the number of function execution requests and execution duration</b>. You pay only for what runs — no cost when idle."},
+];
+
+// ══ ESSAY — same format as exam paper Part 2, rubric 0–3, from PDF only ══
+const ALL_ESSAY = [
+  {
+    q:"Why are regions and Availability Zones (AZs) important in Huawei Cloud compute architecture design?",
+    model:"Regions and Availability Zones are important because ECS instances are deployed across multiple AZs connected through an intranet. If one AZ becomes faulty, other AZs in the same region will not be affected, ensuring high availability and fault tolerance for cloud services.",
+    rubric:"Score 3: mentions AZs connected via intranet AND if one AZ fails others are not affected. Score 2: mentions high availability but misses the intranet connection detail. Score 1: vaguely mentions availability without AZ specifics. Score 0: wrong or no answer."
+  },
+  {
+    q:"Explain one purpose of Auto Scaling (AS) from a computer engineering perspective.",
+    model:"From a computer engineering perspective, Auto Scaling helps engineers maintain application performance and optimize operational cost by automatically adding or removing ECS/BMS instances based on workload demand. It monitors metrics such as CPU usage, memory, and network traffic through Cloud Eye, and works with ELB to ensure traffic is always distributed and no downtime occurs.",
+    rubric:"Score 3: correctly explains AS automatically adds/removes instances AND mentions an engineering benefit (cost optimization, performance, availability) AND references Cloud Eye or ELB. Score 2: mentions automatic scaling with one benefit but misses service integrations. Score 1: only vaguely mentions scaling. Score 0: wrong or no answer."
+  },
+  {
+    q:"Differentiate BMS and ECS in terms of virtualization and use case.",
+    model:"ECS is a virtual machine that uses a shared hypervisor on a physical host, making it suitable for general workloads at lower cost. BMS is a dedicated physical server with no hypervisor — the OS runs directly on hardware, making it ideal for high-performance computing, AI/ML, and core databases where virtualization overhead is unacceptable.",
+    rubric:"Score 3: correctly contrasts ECS (shared hypervisor, general workloads) vs BMS (no hypervisor, HPC/AI/ML). Score 2: correctly explains one side but the other is incomplete. Score 1: vaguely mentions BMS is physical and ECS is virtual without elaboration. Score 0: wrong or no answer."
+  },
+  {
+    q:"Explain the four types of images in IMS and give one use case for each.",
+    model:"Public images are provided by Huawei Cloud with standard OSes like Linux and Windows, used for new standard deployments. Private images are user-created with customized OS and software, used as enterprise server templates. Shared images are shared between different Huawei Cloud accounts, used across departments or teams. Marketplace images are provided by third-party vendors with pre-installed software packages, used for quick deployment of commercial applications.",
+    rubric:"Score 3: correctly names and describes all four image types (Public, Private, Shared, Marketplace) with accurate use cases. Score 2: covers 3 out of 4 types correctly. Score 1: only 1–2 types described or descriptions are mostly inaccurate. Score 0: wrong or no answer."
+  },
+  {
+    q:"Explain what FunctionGraph is and describe how it works from writing code to billing, based on the PDF.",
+    model:"FunctionGraph is Huawei Cloud's serverless FaaS service where developers write code in supported languages (Node.js, Python, Java, C#, PHP, Go), upload it, then trigger execution via API calls or cloud service events. FunctionGraph automatically scales based on the number of requests without manual configuration. Logs are viewed via LTS, monitoring via AOM, and billing is based on the number of execution requests and execution duration — with no cost when idle.",
+    rubric:"Score 3: covers the workflow (write → upload → trigger → auto-scale) AND mentions billing (per execution count and duration) AND at least one integration (LTS or AOM). Score 2: correctly explains the concept and workflow but misses billing details or integrations. Score 1: only vaguely defines serverless or FunctionGraph. Score 0: wrong or no answer."
+  }
+];
+
+// ══ STATE ══
+let playerName='',mcqDeck=[],essayDeck=[];
+let mcqIdx=0,mcqCorrect=0,mcqWrong=[],answered=false;
+let essayIdx=0,essayPts=0;
+
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function showS(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function goLB(){showS('s-lb');loadLB();}
+function loadLB(){if(window._fbLoad)window._fbLoad();else document.getElementById('lb-body').innerHTML='<p class="lb-empty">Firebase not loaded.</p>';}
+
+function startGame(){
+  const n=document.getElementById('pname').value.trim();
+  if(!n){document.getElementById('pname').focus();return;}
+  playerName=n;
+  mcqDeck=shuffle(ALL_MCQ);
+  essayDeck=shuffle(ALL_ESSAY);
+  mcqIdx=0;mcqCorrect=0;mcqWrong=[];answered=false;
+  essayIdx=0;essayPts=0;
+  document.getElementById('mcq-chip').textContent='✦ '+playerName;
+  document.getElementById('essay-chip').textContent='✦ '+playerName;
+  showS('s-mcq');
+  renderQ();
+}
+
+function renderQ(){
+  const d=mcqDeck[mcqIdx];
+  document.getElementById('mcq-of').textContent=(mcqIdx+1)+' / 30';
+  document.getElementById('qnum').textContent='Question '+(mcqIdx+1)+' of 30';
+  document.getElementById('qtext').textContent=d.q;
+  document.getElementById('qexp').innerHTML=d.exp;
+  document.getElementById('qexp').className='exp';
+  document.getElementById('mcq-prog').style.width=(mcqIdx/30*100)+'%';
+  document.getElementById('mcq-sc').textContent=mcqCorrect;
+  answered=false;
+  document.getElementById('btn-next').className='btn-next';
+  const keys=['A','B','C','D'];
+  const c=document.getElementById('opts');
+  c.innerHTML='';
+  d.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='opt';
+    b.innerHTML=`<span class="okey">${keys[i]}</span><span>${o}</span>`;
+    b.onclick=()=>pick(i,b);
+    c.appendChild(b);
+  });
+}
+
+function pick(idx,btn){
+  if(answered)return;
+  answered=true;
+  const d=mcqDeck[mcqIdx];
+  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  if(idx===d.ans){btn.classList.add('correct');mcqCorrect++;}
+  else{btn.classList.add('wrong');document.querySelectorAll('.opt')[d.ans].classList.add('correct');mcqWrong.push({num:mcqIdx+1,q:d.q});}
+  document.getElementById('qexp').classList.add('show');
+  document.getElementById('mcq-sc').textContent=mcqCorrect;
+  const nb=document.getElementById('btn-next');
+  nb.classList.add('show');
+  nb.textContent=mcqIdx<29?'Next →':'Go to Essay Questions →';
+}
+
+function nextQ(){mcqIdx++;if(mcqIdx>=30)startEssay();else renderQ();}
+
+function startEssay(){essayIdx=0;essayPts=0;showS('s-essay');renderE();}
+
+function renderE(){
+  const d=essayDeck[essayIdx];
+  document.getElementById('essay-of').textContent=(essayIdx+1)+' / 5';
+  document.getElementById('eqnum').textContent='Essay '+(essayIdx+1)+' of 5';
+  document.getElementById('eqtext').textContent=d.q;
+  document.getElementById('eta').value='';
+  document.getElementById('eta').disabled=false;
+  document.getElementById('eta').style.borderColor='';
+  document.getElementById('btn-sub').style.display='block';
+  document.getElementById('btn-sub').disabled=false;
+  document.getElementById('loading').className='loading';
+  document.getElementById('aibox').className='ai-box';
+  document.getElementById('btn-enext').style.display='none';
+  document.getElementById('modelblock').className='model-block';
+  document.getElementById('essay-sc').textContent=essayPts;
+  document.getElementById('essay-prog').style.width=(essayIdx/5*100)+'%';
+}
+
+async function submitEssay(){
+  const ans=document.getElementById('eta').value.trim();
+  if(ans.length<10){
+    document.getElementById('eta').style.borderColor='#f87171';
+    setTimeout(()=>document.getElementById('eta').style.borderColor='',1800);
+    return;
+  }
+  const d=essayDeck[essayIdx];
+  document.getElementById('btn-sub').disabled=true;
+  document.getElementById('btn-sub').style.display='none';
+  document.getElementById('eta').disabled=true;
+  document.getElementById('loading').className='loading show';
+
+  let score=0,feedback='';
+  try{
+    const prompt=`You are grading a student essay answer for a Huawei Cloud Compute Services quiz (Week 12, BulSU Emerging Technologies in CPE).
+
+QUESTION: ${d.q}
+
+MODEL ANSWER (for reference only): ${d.model}
+
+GRADING RUBRIC: ${d.rubric}
+
+STUDENT ANSWER: ${ans}
+
+Grade the student on a scale of 0 to 3 strictly following the rubric. Be encouraging but accurate. Respond ONLY with valid JSON, no markdown, no extra text:
+{"score":<integer 0-3>,"feedback":"<2-3 sentences: what they got right, what was missing or incorrect, one specific tip to improve>"}`;
+
+    const res=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "x-api-key":"YOUR_ANTHROPIC_API_KEY_HERE",
+        "anthropic-version":"2023-06-01",
+        "anthropic-dangerous-direct-browser-access":"true"
+      },
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:350,messages:[{role:"user",content:prompt}]})
+    });
+    const data=await res.json();
+    const raw=data.content[0].text.trim().replace(/```json|```/g,'').trim();
+    const parsed=JSON.parse(raw);
+    score=Math.min(3,Math.max(0,parseInt(parsed.score)));
+    feedback=parsed.feedback;
+  }catch(e){
+    score=0;
+    feedback="The AI grader couldn't connect. Make sure your Anthropic API key is added to the HTML file. Your answer has been noted.";
+  }
+
+  document.getElementById('loading').className='loading';
+  essayPts+=score;
+  document.getElementById('essay-sc').textContent=essayPts;
+
+  const sr=document.getElementById('starsrow');
+  const starColor=score===3?'#fbbf24':score===2?'#c084fc':score===1?'#f472b6':'#3a1a4a';
+  const scoreLabel=score===3?'Full marks!':score===2?'Almost there!':score===1?'Partial credit':'Needs work';
+  sr.innerHTML=`<span class="snum">${score}/3</span><span style="font-size:13px;color:var(--muted)">${scoreLabel}</span>`;
+
+  document.getElementById('aitext').innerHTML=feedback;
+  document.getElementById('modelblock').textContent=d.model;
+  document.getElementById('aibox').className='ai-box show';
+
+  const nb=document.getElementById('btn-enext');
+  nb.style.display='block';
+  nb.textContent=essayIdx<4?'Next Essay →':'See My Final Results →';
+}
+
+function toggleModel(btn){
+  const el=document.getElementById('modelblock');
+  const on=el.classList.toggle('show');
+  btn.textContent=on?'Hide model answer':'Show model answer';
+}
+
+function nextEssay(){essayIdx++;if(essayIdx>=5)showResults();else renderE();}
+
+async function showResults(){
+  showS('s-results');
+  const total=mcqCorrect+essayPts;
+  const pct=Math.round(total/45*100);
+
+  document.getElementById('rbig').innerHTML=total+'<span class="score-den"> /45</span>';
+  document.getElementById('rpct').textContent=pct+'% overall';
+  document.getElementById('rcor').textContent=mcqCorrect;
+  document.getElementById('rwrong').textContent=30-mcqCorrect;
+  document.getElementById('ressay').textContent=essayPts;
+
+  let grade,msg,color,bg;
+  if(pct>=93){grade='A+';msg='Outstanding — fully exam-ready!';color='#fbbf24';bg='rgba(251,191,36,0.12)';}
+  else if(pct>=85){grade='A';msg='Excellent! Just polish a few weak spots.';color='#86efac';bg='rgba(134,239,172,0.1)';}
+  else if(pct>=78){grade='B+';msg='Great job! A bit more review and you\'re set.';color='#c084fc';bg='rgba(192,132,252,0.1)';}
+  else if(pct>=70){grade='B';msg='Good foundation — tighten the weak areas.';color='#a78bba';bg='rgba(167,139,186,0.1)';}
+  else if(pct>=60){grade='C';msg='You need focused review before the quiz.';color='#fb923c';bg='rgba(251,146,60,0.1)';}
+  else{grade='D';msg='More study needed — go back to your notes!';color='#f87171';bg='rgba(248,113,113,0.1)';}
+
+  const gt=document.getElementById('rgrade');
+  gt.textContent=grade+' · '+msg;
+  gt.style.cssText=`background:${bg};color:${color};border:1px solid ${color}44;padding:0.5rem 1.25rem;border-radius:100px;font-weight:600;font-size:0.9rem;display:inline-block;margin-top:0.75rem;`;
+
+  const mi=document.getElementById('missed');
+  mi.innerHTML='';
+  if(mcqWrong.length===0){
+    mi.innerHTML='<div class="mitem" style="color:var(--correct)">✦ Perfect MCQ score — nothing missed!</div>';
+  }else{
+    mcqWrong.forEach(m=>{
+      const div=document.createElement('div');
+      div.className='mitem';
+      div.innerHTML=`<span class="mnum">#${m.num}</span>${m.q}`;
+      mi.appendChild(div);
+    });
+  }
+
+  if(window._fbSave) await window._fbSave(playerName,total,mcqCorrect,essayPts);
+}
+
+function restart(){document.getElementById('pname').value='';showS('s-splash');}
+</script>
+</body>
+</html>
