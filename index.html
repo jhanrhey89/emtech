@@ -61,33 +61,6 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .btn-next{background:transparent;border:1.5px solid var(--accent);color:var(--accent);border-radius:10px;padding:0.75rem 2rem;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;align-self:flex-end;margin-top:0.5rem;transition:background 0.15s,color 0.15s,transform 0.1s;display:none;}
 .btn-next.show{display:block;}
 .btn-next:hover{background:var(--accent);color:#0a0010;transform:translateY(-1px);}
-.ecard{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;margin-bottom:1.25rem;position:relative;overflow:hidden;}
-.ecard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent2),var(--accent3),var(--accent));}
-.rubric-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:0.85rem 1rem;margin-bottom:1rem;font-size:0.82rem;color:var(--muted);line-height:1.6;}
-.rubric-box b{color:var(--accent);}
-.eq-text{font-size:1.05rem;font-weight:600;line-height:1.55;margin-bottom:1rem;}
-.essay-ta{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:1rem 1.2rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.95rem;line-height:1.7;resize:vertical;min-height:140px;outline:none;transition:border-color 0.2s;margin-bottom:1rem;display:block;}
-.essay-ta:focus{border-color:var(--accent2);}
-.essay-ta::placeholder{color:var(--muted);}
-.essay-ta:disabled{opacity:0.6;cursor:default;}
-.ai-box{margin-top:1.1rem;padding:1.25rem;background:var(--surface2);border-radius:14px;border:1px solid var(--border);display:none;}
-.ai-box.show{display:block;}
-.stars-row{display:flex;gap:6px;align-items:center;margin-bottom:0.75rem;}
-.snum{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--accent);margin-right:0.5rem;}
-.ai-text{font-size:0.88rem;color:var(--muted);line-height:1.7;}
-.ai-text b{color:var(--text);}
-.toggle-model{background:none;border:none;color:var(--accent2);font-size:13px;cursor:pointer;text-decoration:underline;margin-top:0.75rem;font-family:'DM Sans',sans-serif;display:block;}
-.model-block{margin-top:0.75rem;padding:1rem;background:var(--bg);border-radius:10px;font-size:0.86rem;color:var(--muted);line-height:1.7;display:none;}
-.model-block.show{display:block;}
-.model-block b{color:var(--text);}
-.loading{display:none;align-items:center;gap:10px;padding:0.75rem 0;}
-.loading.show{display:flex;}
-.dot{width:9px;height:9px;border-radius:50%;animation:bop 1.2s infinite;}
-.dot:nth-child(1){background:var(--accent);}
-.dot:nth-child(2){background:var(--accent2);animation-delay:0.2s;}
-.dot:nth-child(3){background:var(--accent3);animation-delay:0.4s;}
-@keyframes bop{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-9px);}}
-.load-text{font-size:13px;color:var(--muted);}
 .lb-wrap{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:1.75rem;margin-bottom:1.5rem;}
 .lb-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
 .lb-hdr h2{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;}
@@ -107,12 +80,11 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .score-den{font-size:1.5rem;color:var(--muted);}
 .score-pct{font-size:1rem;color:var(--muted);margin-top:0.3rem;}
 .grade-tag{display:inline-block;margin-top:1rem;padding:0.5rem 1.25rem;border-radius:100px;font-weight:600;font-size:0.9rem;}
-.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.5rem;}
+.stats2{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.5rem;}
 .sbox{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.1rem;text-align:center;}
 .sval{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;}
 .sval.g{color:var(--correct);}
 .sval.r{color:var(--wrong);}
-.sval.p{color:var(--accent2);}
 .slbl{font-size:12px;color:var(--muted);margin-top:4px;}
 .missed-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1.25rem;}
 .missed-wrap h3{font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:1rem;}
@@ -120,7 +92,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .mitem:last-child{border-bottom:none;}
 .mnum{color:var(--wrong);font-weight:700;flex-shrink:0;}
 .btn-row{display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:0.5rem;}
-@media(max-width:500px){.stats3{grid-template-columns:1fr 1fr;}.qheader{gap:0.4rem;}}
+@media(max-width:500px){.stats2{grid-template-columns:1fr 1fr;}.qheader{gap:0.4rem;}}
 </style>
 </head>
 <body>
@@ -133,12 +105,11 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   <div class="eyebrow">BulSU · Engr. Cruz · Week 12</div>
   <h1 class="big-title">Huawei Cloud<br><em>Compute Quiz</em></h1>
   <div class="divider"></div>
-  <p class="sub-text">30 multiple-choice + 5 essay questions. All questions are based strictly on your Week 12 PDF. Questions shuffle every run. Scores sync to the Firebase leaderboard.</p>
+  <p class="sub-text">60 multiple-choice questions from your Week 12 PDF. Questions and answer choices shuffle every run. Scores sync to the Firebase leaderboard.</p>
   <div class="pills">
-    <span class="pill">Part 1: <b>30 MCQ</b></span>
-    <span class="pill">Part 2: <b>5 Essays</b></span>
-    <span class="pill"><b>AI graded</b> 0–3 pts each</span>
+    <span class="pill"><b>60 MCQ</b></span>
     <span class="pill"><b>Shuffled</b> every run</span>
+    <span class="pill"><b>Random</b> A B C D</span>
     <span class="pill"><b>Firebase</b> leaderboard</span>
   </div>
   <label class="field-label" for="pname">Your name</label>
@@ -152,9 +123,9 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 <!-- MCQ -->
 <div class="screen" id="s-mcq">
   <div class="qheader">
-    <span class="part-tag">Part 1 · MCQ</span>
+    <span class="part-tag">Multiple Choice</span>
     <span class="player-chip" id="mcq-chip"></span>
-    <span class="q-of" id="mcq-of">1 / 30</span>
+    <span class="q-of" id="mcq-of">1 / 60</span>
     <span class="live-score">Score: <b id="mcq-sc">0</b></span>
   </div>
   <div class="prog-track"><div class="prog-fill" id="mcq-prog" style="width:0%"></div></div>
@@ -165,41 +136,6 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   </div>
   <div class="opts" id="opts"></div>
   <button class="btn-next" id="btn-next" onclick="nextQ()">Next →</button>
-</div>
-
-<!-- ESSAY -->
-<div class="screen" id="s-essay">
-  <div class="qheader">
-    <span class="part-tag">Part 2 · Essay</span>
-    <span class="player-chip" id="essay-chip"></span>
-    <span class="q-of" id="essay-of">1 / 5</span>
-    <span class="live-score">Essay pts: <b id="essay-sc">0</b></span>
-  </div>
-  <div class="prog-track"><div class="prog-fill" id="essay-prog" style="width:0%"></div></div>
-  <div class="ecard">
-    <div class="qnum" id="eqnum">Essay 1 of 5</div>
-    <div class="rubric-box">
-      <b>Scoring rubric (0–3):</b><br>
-      0 — No answer or fails to meet the basic requirement<br>
-      1 — Lacks several details; some information is inaccurate<br>
-      2 — Missing slight details; most information is accurate<br>
-      3 — Answer is complete and all information is accurate
-    </div>
-    <div class="eq-text" id="eqtext"></div>
-    <textarea class="essay-ta" id="eta" placeholder="Answer in 1–3 sentences. The AI will grade your response 0–3 based on accuracy and completeness…"></textarea>
-    <button class="btn-main" id="btn-sub" onclick="submitEssay()">Submit for AI Grading ✦</button>
-    <div class="loading" id="loading">
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-      <span class="load-text">Grading your answer…</span>
-    </div>
-    <div class="ai-box" id="aibox">
-      <div class="stars-row" id="starsrow"></div>
-      <div class="ai-text" id="aitext"></div>
-      <button class="toggle-model" onclick="toggleModel(this)">Show model answer</button>
-      <div class="model-block" id="modelblock"></div>
-    </div>
-    <button class="btn-next show" id="btn-enext" style="display:none;margin-top:1rem;" onclick="nextEssay()">Next Essay →</button>
-  </div>
 </div>
 
 <!-- LEADERBOARD -->
@@ -225,10 +161,9 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
     <div class="score-pct" id="rpct"></div>
     <div class="grade-tag" id="rgrade"></div>
   </div>
-  <div class="stats3">
-    <div class="sbox"><div class="sval g" id="rcor"></div><div class="slbl">MCQ correct</div></div>
-    <div class="sbox"><div class="sval r" id="rwrong"></div><div class="slbl">MCQ wrong</div></div>
-    <div class="sbox"><div class="sval p" id="ressay"></div><div class="slbl">Essay pts (max 15)</div></div>
+  <div class="stats2">
+    <div class="sbox"><div class="sval g" id="rcor"></div><div class="slbl">Correct</div></div>
+    <div class="sbox"><div class="sval r" id="rwrong"></div><div class="slbl">Wrong</div></div>
   </div>
   <div class="missed-wrap">
     <h3>Questions you missed</h3>
@@ -255,9 +190,9 @@ const firebaseConfig = {
 };
 let db=null;
 try{const app=initializeApp(firebaseConfig);db=getFirestore(app);}catch(e){console.warn('Firebase:',e);}
-window._fbSave=async(name,total,mcq,essay)=>{
+window._fbSave=async(name,score)=>{
   if(!db)return;
-  try{await addDoc(collection(db,"scores"),{name,total,mcq,essay,createdAt:serverTimestamp()});}catch(e){console.warn(e);}
+  try{await addDoc(collection(db,"scores"),{name,total:score,mcq:score,createdAt:serverTimestamp()});}catch(e){console.warn(e);}
 };
 window._fbLoad=async()=>{
   const el=document.getElementById('lb-body');
@@ -271,108 +206,117 @@ window._fbLoad=async()=>{
     snap.forEach(doc=>{
       const d=doc.data();
       const rc=rank===1?'r1':rank===2?'r2':rank===3?'r3':'';
-      rows+=`<tr><td><span class="rank-dot ${rc}">${rank}</span></td><td style="font-weight:500">${d.name||'Anonymous'}</td><td style="color:var(--accent);font-weight:600">${d.total}<span style="color:var(--muted);font-weight:400"> /45</span></td><td style="color:var(--muted)">${d.mcq}/30</td><td style="color:var(--muted)">${d.essay}/15</td></tr>`;
+      rows+=`<tr><td><span class="rank-dot ${rc}">${rank}</span></td><td style="font-weight:500">${d.name||'Anonymous'}</td><td style="color:var(--accent);font-weight:600">${d.total}<span style="color:var(--muted);font-weight:400"> /60</span></td></tr>`;
       rank++;
     });
-    el.innerHTML=`<table class="lb-tbl"><thead><tr><th>#</th><th>Player</th><th>Total</th><th>MCQ</th><th>Essay</th></tr></thead><tbody>${rows}</tbody></table>`;
+    el.innerHTML=`<table class="lb-tbl"><thead><tr><th>#</th><th>Player</th><th>Score</th></tr></thead><tbody>${rows}</tbody></table>`;
   }catch(e){el.innerHTML='<p class="lb-err">Could not load scores. Check Firestore rules.</p>';}
 };
 </script>
 
 <script>
-// ══ MCQ — exam-paper style, all answers from PDF ══
+// ══ 60 MCQ — all from PDF, answers spread A(0) B(1) C(2) D(3) in rotation ══
+// Each question: correct answer is already placed at the correct index.
+// Index 0=A, 1=B, 2=C, 3=D
 const ALL_MCQ = [
-  // ECS
-  {q:"What is Elastic Cloud Server (ECS) in Huawei Cloud?",opts:["A dedicated physical server with no hypervisor","An IaaS compute service that provides scalable virtual servers in the cloud","A serverless platform for running code without servers","A container orchestration service based on Kubernetes"],ans:1,exp:"<b>ECS</b> is Huawei Cloud's IaaS compute service that provides scalable virtual servers, allowing users to create VMs on demand and select CPU, memory, storage, and OS."},
-  {q:"Which layer does ECS represent in cloud architecture?",opts:["Networking layer","Storage layer","Compute layer","Virtualization layer"],ans:2,exp:"ECS represents the <b>compute layer</b> in IaaS. Compute is the core processing layer; storage stores data; networking connects services."},
-  {q:"ECS instances are deployed across multiple Availability Zones (AZs). What happens if one AZ becomes faulty?",opts:["All ECS instances in the region go down","Other AZs in the same region are not affected","The entire cloud service is suspended","The system automatically migrates to another region"],ans:1,exp:"ECSs are deployed in multiple AZs connected through an intranet. <b>If one AZ becomes faulty, other AZs in the same region will not be affected.</b>"},
-  {q:"Which Huawei Cloud service allows you to build a dedicated network, configure subnets and security groups, and communicate with external networks via EIP?",opts:["EVS","IMS","VPC (Virtual Private Cloud)","Cloud Eye"],ans:2,exp:"<b>VPC (Virtual Private Cloud)</b> lets you build a dedicated network, configure subnets and security groups, and enable communication with the external network via an EIP with assigned bandwidth."},
-  {q:"Which Huawei Cloud service is used with ECS to create images and enable rapid service deployment?",opts:["CBR","Cloud Eye","EVS","IMS (Image Management Service)"],ans:3,exp:"<b>IMS (Image Management Service)</b> allows you to create images for ECSs, or create ECSs using private images for rapid service deployment."},
-  {q:"Which Huawei Cloud service provides storage for ECS, while its companion provides data backup and recovery?",opts:["OBS and VPC","EVS and VBS/CBR","IMS and Cloud Eye","ELB and DeH"],ans:1,exp:"<b>EVS (Elastic Volume Service)</b> provides storage and <b>VBS/CBR (Volume Backup Service / Cloud Backup and Recovery)</b> provides data backup and recovery functions for ECS."},
-  {q:"Which service monitors ECS resource usage to help ensure performance, reliability, and availability?",opts:["IMS","VBS","Cloud Eye","VPC"],ans:2,exp:"<b>Cloud Eye</b> is the key monitoring service for ECS — it tracks resource usage such as CPU, memory, network traffic, and disk I/O."},
-  {q:"Under the ECS Shared Responsibility Model, who is responsible for securing the OS and applications?",opts:["Huawei Cloud","The user","Third-party vendors","Both Huawei and the user"],ans:1,exp:"Under the <b>Shared Responsibility Model</b>: Huawei secures the infrastructure. <b>The user is responsible</b> for OS configuration, application installation, and security patches."},
-  {q:"Which ECS security feature acts as a firewall to control inbound and outbound traffic?",opts:["Key pair authentication","IAM integration","Security groups","Encrypted disks"],ans:2,exp:"<b>Security groups</b> act as firewall rules that control inbound and outbound traffic for ECS instances."},
-  {q:"Which ECS instance type is recommended for website R&D, testing, and small-scale databases?",opts:["Memory-optimized","GPU-accelerated","Disk-intensive","General-computing"],ans:3,exp:"<b>General-computing ECSs</b> provide a balance of compute, memory, and network resources — appropriate for medium-workload applications like website R&D and small-scale databases."},
-  {q:"Which ECS instance type is recommended for precision marketing, e-commerce, and mobile apps?",opts:["General-computing","Compute-optimized","Memory-optimized","Disk-intensive"],ans:2,exp:"<b>Memory-optimized ECSs</b> are recommended for e-commerce and precision marketing — they feature large memory, ultra-high I/O EVS disks, and appropriate bandwidths."},
-  {q:"Which ECS instance type is recommended for graphics rendering and engineering drawing?",opts:["Disk-intensive","Memory-optimized","GPU-accelerated (GACS)","General-computing"],ans:2,exp:"<b>GPU-accelerated ECSs (GACS)</b> are designed for graphics rendering and engineering drawing, providing cost-effective graphics acceleration and high GPU performance."},
-  {q:"Which ECS instance type is recommended for MapReduce and Hadoop workloads?",opts:["Memory-optimized","GPU-accelerated","General-computing","Disk-intensive"],ans:3,exp:"<b>Disk-intensive ECSs</b> are suitable for MapReduce and Hadoop — they handle high-performance sequential read/write on ultra-large datasets in local storage."},
-  {q:"A cloud engineer evaluates ECS for a project. Which of the following is NOT one of the five engineering evaluation factors listed in the PDF?",opts:["Performance","Scalability","Brand reputation","Security"],ans:2,exp:"The five ECS engineering evaluation factors are: <b>Performance, Scalability, Availability, Security, and Cost</b>. Brand reputation is not listed."},
-  // BMS
-  {q:"What is Bare Metal Server (BMS) in Huawei Cloud?",opts:["A virtual machine on a shared physical host","A dedicated physical server in the cloud without a virtualization layer","A container orchestration service","A serverless compute platform"],ans:1,exp:"<b>BMS</b> provides dedicated physical servers in the cloud environment, without a virtualization layer between the hardware and the operating system."},
-  {q:"How does BMS differ from ECS?",opts:["BMS uses a shared hypervisor; ECS does not","BMS runs directly on physical hardware without a hypervisor; ECS is a virtual machine","BMS is cheaper than ECS","BMS cannot integrate with VPC or EVS"],ans:1,exp:"<b>BMS runs directly on physical hardware with no hypervisor</b>. ECS is a virtual machine that uses a shared hypervisor. ECS = Virtual machine; BMS = Physical server delivered as a cloud service."},
-  {q:"Which of the following is a core characteristic of BMS architecture?",opts:["Shared hypervisor across tenants","Multi-tenant hardware","No hypervisor layer with direct OS-to-hardware interaction","Automatic horizontal scaling"],ans:2,exp:"BMS core characteristics include: dedicated physical CPU/memory/storage, <b>no hypervisor layer</b>, and <b>direct OS-to-hardware interaction</b>."},
-  {q:"Which BMS key feature eliminates the 'noisy neighbor' effect?",opts:["Elastic provisioning","High-speed network interfaces","Dedicated physical resources allocated to one tenant","Integration with VPC"],ans:2,exp:"BMS provides <b>dedicated physical resources</b> — the entire server is allocated to one tenant, eliminating the 'noisy neighbor' effect and ensuring predictable performance."},
-  {q:"BMS is ideal for High Performance Computing (HPC). Which of the following is a reason stated in the PDF?",opts:["BMS uses shared memory across tenants","BMS provides direct CPU and GPU access with high-speed network interfaces","BMS is the cheapest Huawei Cloud compute option","BMS requires no OS management"],ans:1,exp:"BMS is ideal for HPC because it provides <b>direct CPU and GPU access</b> and <b>high-speed network interfaces</b> — enabling AI/ML, big data analytics, scientific simulations, and financial modeling."},
-  {q:"According to the PDF, when should you NOT use BMS?",opts:["When workloads require direct hardware access","When virtualization overhead is unacceptable","When workloads are small or variable and cost efficiency is the priority","When hardware isolation is required for compliance"],ans:2,exp:"Avoid BMS when: <b>workloads are small or variable, cost efficiency is priority, horizontal scaling is needed frequently, and virtualization is acceptable</b>. ECS is more appropriate in those cases."},
-  // AS
-  {q:"What is Auto Scaling (AS) in Huawei Cloud?",opts:["A service that manually adds servers when requested","A service that automatically adjusts the number of cloud servers based on workload demand","A monitoring tool that tracks CPU and memory usage","A load balancer that distributes traffic across ECS instances"],ans:1,exp:"<b>Auto Scaling (AS)</b> is a Huawei Cloud service that automatically adjusts the number of ECS or BMS instances based on workload demand, monitoring metrics, predefined scaling rules, and scheduled events."},
-  {q:"Huawei Auto Scaling primarily focuses on which type of scaling?",opts:["Vertical scaling (scale up/down)","Horizontal scaling (add/remove instances)","Storage scaling","Network bandwidth scaling"],ans:1,exp:"Huawei AS primarily focuses on <b>horizontal scaling</b> — automatically adding or removing ECS/BMS instances. Vertical scaling (increasing CPU/RAM of one server) requires a reboot and is less flexible."},
-  {q:"Which AS component defines the minimum and maximum number of instances in a group?",opts:["Scaling Configuration","Scaling Policy","Cloud Eye","Scaling Group"],ans:3,exp:"The <b>Scaling Group</b> is a logical collection of ECS or BMS instances that share the same configuration and scaling rules. It defines the minimum and maximum number of instances."},
-  {q:"Which AS component serves as a template defining instance type, OS image, disk size, and network settings for new servers?",opts:["Scaling Group","Scaling Policy","Scaling Configuration","Cloud Eye"],ans:2,exp:"The <b>Scaling Configuration</b> defines the instance type, OS image, disk size, and network settings — it is the template used when AS launches new instances."},
-  {q:"An AS policy is set to add instances every 8 AM and remove them every 10 PM. Which policy type is this?",opts:["Alarm-based scaling","Manual scaling","Scheduled scaling","Predictive scaling"],ans:2,exp:"<b>Scheduled scaling</b> is triggered at specific times — for example, increasing capacity every 8 AM and decreasing every 10 PM."},
-  {q:"Which AS policy type is triggered when CPU usage exceeds 80% as detected by Cloud Eye?",opts:["Scheduled scaling","Manual scaling","Alarm-based scaling","Horizontal scaling"],ans:2,exp:"<b>Alarm-based scaling</b> is triggered when a metric exceeds a threshold — for example, CPU > 80% triggers AS to add 2 instances. Cloud Eye detects these metrics."},
-  {q:"Which service does Auto Scaling integrate with to distribute traffic and automatically register new instances?",opts:["VPC","IMS","Cloud Eye","ELB (Elastic Load Balancer)"],ans:3,exp:"AS integrates with <b>ELB (Elastic Load Balancer)</b> to distribute traffic across instances, automatically register new instances added by AS, and remove terminated ones — ensuring high availability and no downtime."},
-  // IMS
-  {q:"What does an IMS image contain?",opts:["Only the operating system","Operating system, pre-installed software, configuration settings, drivers, and patches","Only application data","Only network configuration files"],ans:1,exp:"An IMS image is a template that contains: <b>operating system, pre-installed software, configuration settings, drivers, and patches</b>. When launching ECS, the image is copied to create the system disk."},
-  {q:"Which IMS image type is provided by Huawei Cloud with a pre-tested standard OS like Linux or Windows?",opts:["Private image","Shared image","Marketplace image","Public image"],ans:3,exp:"<b>Public images</b> are provided by Huawei Cloud with pre-installed standard OSes (Linux, Windows) that have been thoroughly tested to provide secure and stable services."},
-  {q:"Which IMS image type is created by users, customized with their own OS and software, and stored in their own account?",opts:["Public image","Marketplace image","Private image","Shared image"],ans:2,exp:"<b>Private images</b> are created by users with a customized OS and software. They are stored in the user's account and used as enterprise standard server templates."},
-  {q:"Which IMS image type is shared between different Huawei Cloud accounts, useful for multi-team environments?",opts:["Public image","Private image","Marketplace image","Shared image"],ans:3,exp:"<b>Shared images</b> are shared between different Huawei Cloud accounts — ideal for multi-team or multi-department environments that need a common image."},
-  {q:"Where does IMS store multiple copies of image files to ensure data reliability and durability?",opts:["EVS","ECS local disk","OBS (Object Storage Service)","VPC"],ans:2,exp:"Multiple copies of IMS image files are stored in <b>OBS (Object Storage Service)</b>, which provides excellent data reliability and durability."},
-  {q:"Which encryption service is used by IMS to secure private images?",opts:["IAM","VPC ACLs","KMS (Key Management Service)","Security groups"],ans:2,exp:"Private images can be encrypted for data security using <b>envelope encryption provided by KMS (Key Management Service)</b>."},
-  // CCE
-  {q:"What is Cloud Container Engine (CCE) in Huawei Cloud?",opts:["A virtual machine management service","A managed container orchestration service based on Kubernetes","A serverless computing platform","A dedicated physical server service"],ans:1,exp:"<b>CCE</b> is Huawei Cloud's managed container orchestration service based on Kubernetes. It enables users to deploy containerized applications, manage container clusters, automate scaling and recovery, and simplify microservices architecture."},
-  {q:"What is a Pod in CCE/Kubernetes?",opts:["A physical server in the cluster","A collection of worker nodes","The smallest deployable unit that contains one or more related containers sharing storage and network","A stable network endpoint for microservices"],ans:2,exp:"A <b>Pod</b> is the smallest deployable unit in Kubernetes — it consists of one or more related containers that share the same storage and network space."},
-  {q:"What is the role of the Master Node in CCE architecture?",opts:["Running application containers and hosting pods","Storing image data for containers","Scheduling containers, monitoring cluster state, and managing API calls","Providing persistent storage for the cluster"],ans:2,exp:"The <b>Master Node (Control Plane)</b> is responsible for scheduling containers, monitoring cluster state, and managing API calls. Worker nodes run the actual application containers."},
-  {q:"For high availability, how many master nodes does CCE deploy and where?",opts:["1 node in a single AZ","2 nodes in the same AZ","3 nodes in different AZs","5 nodes across different regions"],ans:2,exp:"CCE deploys <b>3 master nodes in different Availability Zones</b> for the cluster control plane, ensuring service continuity even if one AZ fails."},
-  {q:"Which of the following is a CCE advantage related to AI computing performance?",opts:["CCE reduces storage costs by 50%","AI computing is 3x to 5x better with NUMA BMSs and high-speed InfiniBand network cards","CCE replaces the need for any networking configuration","CCE provides free GPU resources"],ans:1,exp:"According to the PDF, <b>AI computing is 3x to 5x better with NUMA BMSs and high-speed InfiniBand network cards</b> in CCE."},
-  // DeH
-  {q:"What is Dedicated Host (DeH) in Huawei Cloud?",opts:["A virtual machine on a shared physical host","A physical server with no hypervisor, same as BMS","A physically isolated host dedicated to a single tenant where multiple ECS instances can be deployed","A container cluster node"],ans:2,exp:"<b>DeH</b> is a physically isolated host dedicated to a single tenant. Unlike BMS, the hypervisor is present but not shared across customers — multiple ECS instances run on the same physical host for that one tenant."},
-  {q:"In the DeH comparison table from the PDF, which service has 'No' for physical sharing, 'Yes' for virtualization, and 'Yes' for multiple VMs?",opts:["ECS","BMS","FunctionGraph","Dedicated Host (DeH)"],ans:3,exp:"From the PDF comparison table: <b>DeH</b> has No physical sharing, Yes virtualization, and Yes multiple VMs — distinguishing it from both ECS (shared) and BMS (no virtualization, single OS)."},
-  // FunctionGraph
-  {q:"What is FunctionGraph in Huawei Cloud?",opts:["A virtual machine service for running applications","A serverless computing service (FaaS) that runs code without provisioning or managing servers","A container orchestration service","A dedicated physical server service"],ans:1,exp:"<b>FunctionGraph</b> is Huawei Cloud's serverless computing service — a Function-as-a-Service (FaaS) platform where you upload code, the cloud executes it on demand, and you pay only for execution time."},
-  {q:"What does 'serverless' mean in the context of FunctionGraph?",opts:["There are literally no servers involved","You do not manage servers; infrastructure is abstracted and scaling is automatic","The service is always free of charge","You must provision servers manually before running functions"],ans:1,exp:"'Serverless' does NOT mean there are no servers. It means <b>you do not manage servers, infrastructure is abstracted, and scaling is automatic</b>. FunctionGraph focuses on event-driven execution and pay-per-execution pricing."},
-  {q:"Which of the following programming languages is supported by FunctionGraph according to the PDF?",opts:["Ruby and Swift","Kotlin and Rust","Node.js, Python, Java, C#, PHP, and Go","Only Python and Java"],ans:2,exp:"FunctionGraph supports: <b>Node.js, Python, Java, C#, PHP, and Go</b>."},
-  {q:"FunctionGraph is interconnected with which service to view run logs of functions?",opts:["Cloud Eye","AOM","LTS (Log Tank Service)","VPC"],ans:2,exp:"FunctionGraph is interconnected with <b>LTS (Log Tank Service)</b> to view run logs of functions."},
-  {q:"FunctionGraph is interconnected with which service to view graphical monitoring information?",opts:["Cloud Eye","LTS","VPC","AOM (Application Operations Management)"],ans:3,exp:"FunctionGraph is interconnected with <b>AOM (Application Operations Management)</b> to view graphical monitoring information."},
-  {q:"FunctionGraph billing is based on which of the following?",opts:["Number of servers provisioned per hour","Number of containers running","Number of function execution requests and execution duration","GB of storage consumed per month"],ans:2,exp:"FunctionGraph billing is based on <b>the number of function execution requests and execution duration</b>. You pay only for what runs — no cost when idle."},
-];
+  // A answers (idx 0) — 15 questions
+  {q:"ECS stands for which of the following in Huawei Cloud?",opts:["Elastic Cloud Server","Elastic Compute System","Enhanced Cloud Service","Elastic Container System"],ans:0,exp:"<b>ECS = Elastic Cloud Server</b> — Huawei Cloud's IaaS virtual machine service."},
+  {q:"Which ECS instance type is recommended for website R&D, testing, and small-scale databases?",opts:["General-computing","Memory-optimized","GPU-accelerated","Disk-intensive"],ans:0,exp:"<b>General-computing ECSs</b> provide a balance of compute, memory, and network — suitable for medium-workload applications like website R&D and small databases."},
+  {q:"BMS stands for which of the following?",opts:["Bare Metal Server","Basic Management Server","Bulk Memory Service","Backend Managed System"],ans:0,exp:"<b>BMS = Bare Metal Server</b> — a dedicated physical server in the cloud with no virtualization layer between hardware and OS."},
+  {q:"Auto Scaling (AS) in Huawei Cloud primarily focuses on which type of scaling?",opts:["Horizontal scaling — adding or removing instances","Vertical scaling — increasing CPU or RAM","Storage scaling","Network bandwidth scaling"],ans:0,exp:"Huawei AS primarily focuses on <b>horizontal scaling</b> — automatically adding or removing ECS/BMS instances based on demand."},
+  {q:"An IMS image contains which of the following?",opts:["OS, pre-installed software, configuration settings, drivers, and patches","Only the operating system","Only application data","Only network configuration files"],ans:0,exp:"An IMS image template contains: <b>OS, pre-installed software, configuration settings, drivers, and patches</b>. It is copied to the system disk when launching an ECS."},
+  {q:"CCE (Cloud Container Engine) is built on which open-source technology?",opts:["Kubernetes","Docker Swarm","Apache Mesos","OpenShift"],ans:0,exp:"<b>CCE is built on Kubernetes</b> — the open-source container orchestration system responsible for scheduling, scaling, load balancing, and self-healing."},
+  {q:"DeH stands for which of the following?",opts:["Dedicated Host","Distributed Edge Hardware","Dynamic Elastic Host","Data Execution Hub"],ans:0,exp:"<b>DeH = Dedicated Host</b> — a physically isolated host dedicated to one tenant on which multiple ECS instances can be deployed."},
+  {q:"FunctionGraph is classified as which type of computing service?",opts:["Serverless computing / FaaS","IaaS","PaaS","BaaS"],ans:0,exp:"<b>FunctionGraph is a serverless FaaS (Function as a Service)</b> platform — developers upload code, the cloud runs it on demand, and billing is per execution only."},
+  {q:"Which Huawei Cloud service is used to monitor ECS CPU, memory, network traffic, and disk I/O?",opts:["Cloud Eye","IMS","CBR","VBS"],ans:0,exp:"<b>Cloud Eye</b> is the monitoring service for ECS — it tracks resource usage and triggers alarm-based Auto Scaling policies."},
+  {q:"Which AS component is a logical collection of ECS/BMS instances that defines the min and max instance count?",opts:["Scaling Group","Scaling Policy","Cloud Eye","Scaling Configuration"],ans:0,exp:"The <b>Scaling Group</b> is a logical collection of ECS/BMS instances sharing the same configuration and scaling rules. It defines the minimum and maximum number of instances."},
+  {q:"Which IMS image type is provided by Huawei Cloud with a standard pre-tested OS like Linux or Windows?",opts:["Public image","Private image","Shared image","Marketplace image"],ans:0,exp:"<b>Public images</b> are provided by Huawei Cloud with standard OSes (Linux, Windows) thoroughly tested for security and stability."},
+  {q:"What is a Pod in CCE/Kubernetes?",opts:["The smallest deployable unit containing one or more containers sharing storage and network","A physical server in the cluster","A collection of worker nodes","A stable network endpoint for microservices"],ans:0,exp:"A <b>Pod</b> is the smallest deployable unit in Kubernetes — it holds one or more related containers sharing the same storage and network space."},
+  {q:"According to the PDF, which is correct about ECS vs BMS vs DeH?",opts:["ECS = shared host; BMS = physical server, no hypervisor; DeH = dedicated host with multiple VMs","ECS = physical server; BMS = virtual machine; DeH = container cluster","All three use a shared hypervisor","BMS and DeH are identical services"],ans:0,exp:"From the PDF: <b>ECS = shared physical host (multi-tenant); BMS = entire physical server as one machine (no hypervisor); DeH = dedicated physical host running multiple VMs for one tenant.</b>"},
+  {q:"FunctionGraph is interconnected with which service to view run logs of functions?",opts:["LTS (Log Tank Service)","Cloud Eye","AOM","VPC"],ans:0,exp:"FunctionGraph is interconnected with <b>LTS (Log Tank Service)</b> to view run logs of functions."},
+  {q:"Which ECS security feature provides firewall rules to control inbound and outbound traffic?",opts:["Security groups","Key pair authentication","IAM integration","Encrypted disks"],ans:0,exp:"<b>Security groups</b> act as firewall rules controlling inbound and outbound traffic for ECS instances."},
 
-// ══ ESSAY — same format as exam paper Part 2, rubric 0–3, from PDF only ══
-const ALL_ESSAY = [
-  {
-    q:"Why are regions and Availability Zones (AZs) important in Huawei Cloud compute architecture design?",
-    model:"Regions and Availability Zones are important because ECS instances are deployed across multiple AZs connected through an intranet. If one AZ becomes faulty, other AZs in the same region will not be affected, ensuring high availability and fault tolerance for cloud services.",
-    rubric:"Score 3: mentions AZs connected via intranet AND if one AZ fails others are not affected. Score 2: mentions high availability but misses the intranet connection detail. Score 1: vaguely mentions availability without AZ specifics. Score 0: wrong or no answer."
-  },
-  {
-    q:"Explain one purpose of Auto Scaling (AS) from a computer engineering perspective.",
-    model:"From a computer engineering perspective, Auto Scaling helps engineers maintain application performance and optimize operational cost by automatically adding or removing ECS/BMS instances based on workload demand. It monitors metrics such as CPU usage, memory, and network traffic through Cloud Eye, and works with ELB to ensure traffic is always distributed and no downtime occurs.",
-    rubric:"Score 3: correctly explains AS automatically adds/removes instances AND mentions an engineering benefit (cost optimization, performance, availability) AND references Cloud Eye or ELB. Score 2: mentions automatic scaling with one benefit but misses service integrations. Score 1: only vaguely mentions scaling. Score 0: wrong or no answer."
-  },
-  {
-    q:"Differentiate BMS and ECS in terms of virtualization and use case.",
-    model:"ECS is a virtual machine that uses a shared hypervisor on a physical host, making it suitable for general workloads at lower cost. BMS is a dedicated physical server with no hypervisor — the OS runs directly on hardware, making it ideal for high-performance computing, AI/ML, and core databases where virtualization overhead is unacceptable.",
-    rubric:"Score 3: correctly contrasts ECS (shared hypervisor, general workloads) vs BMS (no hypervisor, HPC/AI/ML). Score 2: correctly explains one side but the other is incomplete. Score 1: vaguely mentions BMS is physical and ECS is virtual without elaboration. Score 0: wrong or no answer."
-  },
-  {
-    q:"Explain the four types of images in IMS and give one use case for each.",
-    model:"Public images are provided by Huawei Cloud with standard OSes like Linux and Windows, used for new standard deployments. Private images are user-created with customized OS and software, used as enterprise server templates. Shared images are shared between different Huawei Cloud accounts, used across departments or teams. Marketplace images are provided by third-party vendors with pre-installed software packages, used for quick deployment of commercial applications.",
-    rubric:"Score 3: correctly names and describes all four image types (Public, Private, Shared, Marketplace) with accurate use cases. Score 2: covers 3 out of 4 types correctly. Score 1: only 1–2 types described or descriptions are mostly inaccurate. Score 0: wrong or no answer."
-  },
-  {
-    q:"Explain what FunctionGraph is and describe how it works from writing code to billing, based on the PDF.",
-    model:"FunctionGraph is Huawei Cloud's serverless FaaS service where developers write code in supported languages (Node.js, Python, Java, C#, PHP, Go), upload it, then trigger execution via API calls or cloud service events. FunctionGraph automatically scales based on the number of requests without manual configuration. Logs are viewed via LTS, monitoring via AOM, and billing is based on the number of execution requests and execution duration — with no cost when idle.",
-    rubric:"Score 3: covers the workflow (write → upload → trigger → auto-scale) AND mentions billing (per execution count and duration) AND at least one integration (LTS or AOM). Score 2: correctly explains the concept and workflow but misses billing details or integrations. Score 1: only vaguely defines serverless or FunctionGraph. Score 0: wrong or no answer."
-  }
+  // B answers (idx 1) — 15 questions
+  {q:"Which layer does ECS represent in cloud IaaS architecture?",opts:["Networking layer","Compute layer","Storage layer","Virtualization layer"],ans:1,exp:"ECS represents the <b>compute layer</b> in IaaS. Compute is the core processing layer; storage stores data; networking connects services."},
+  {q:"What happens to other AZs in the same region if one Availability Zone becomes faulty?",opts:["All ECS instances in the region go down","Other AZs in the same region are not affected","The entire cloud service is suspended","All instances migrate to another region automatically"],ans:1,exp:"ECSs are deployed across multiple AZs connected via intranet. <b>If one AZ becomes faulty, other AZs in the same region will not be affected.</b>"},
+  {q:"Under the ECS Shared Responsibility Model, who is responsible for securing the OS and applications?",opts:["Huawei Cloud","The user","Third-party vendors","Both Huawei and the user equally"],ans:1,exp:"Under the <b>Shared Responsibility Model</b>: Huawei secures the infrastructure. <b>The user</b> is responsible for OS configuration, application installation, and security patches."},
+  {q:"BMS runs differently from ECS in which fundamental way?",opts:["BMS uses a shared hypervisor; ECS does not","BMS runs directly on physical hardware with no hypervisor; ECS is a virtual machine","BMS is cheaper than ECS","BMS cannot integrate with VPC or EVS"],ans:1,exp:"<b>BMS runs directly on physical hardware with no hypervisor</b>. ECS is a virtual machine using a shared hypervisor. ECS = VM; BMS = Physical server as a cloud service."},
+  {q:"Which AS policy type is triggered when CPU usage exceeds a threshold as detected by Cloud Eye?",opts:["Scheduled scaling","Alarm-based scaling","Manual scaling","Predictive scaling"],ans:1,exp:"<b>Alarm-based scaling</b> is triggered when a monitored metric (e.g., CPU > 80%) crosses a threshold detected by Cloud Eye — for example, adding 2 instances automatically."},
+  {q:"Which IMS image type is created by users with a customized OS and software, stored in their own account?",opts:["Public image","Private image","Shared image","Marketplace image"],ans:1,exp:"<b>Private images</b> are created by the user with a customized OS and software, stored in their account — used as enterprise standard server templates."},
+  {q:"What is the role of the Master Node (Control Plane) in CCE architecture?",opts:["Running application containers and hosting pods","Scheduling containers, monitoring cluster state, and managing API calls","Storing image data for containers","Providing persistent storage for the cluster"],ans:1,exp:"The <b>Master Node (Control Plane)</b> schedules containers onto worker nodes, handles API calls, and monitors cluster state. Worker nodes run the actual application containers."},
+  {q:"What does 'serverless' mean in the context of FunctionGraph?",opts:["There are literally no servers involved","You do not manage servers; infrastructure is abstracted and scaling is automatic","The service is always free","You must provision servers manually first"],ans:1,exp:"'Serverless' does NOT mean no servers exist. It means <b>you do not manage servers — infrastructure is abstracted, scaling is automatic</b>, and billing is per execution."},
+  {q:"Which Huawei Cloud service provides storage for ECS, while its companion provides data backup and recovery?",opts:["OBS and VPC","EVS and VBS/CBR","IMS and Cloud Eye","ELB and DeH"],ans:1,exp:"<b>EVS (Elastic Volume Service)</b> provides storage. <b>VBS/CBR (Volume Backup Service / Cloud Backup and Recovery)</b> provides data backup and recovery for ECS."},
+  {q:"BMS is ideal for High Performance Computing (HPC). What reason does the PDF give?",opts:["BMS uses shared memory across tenants","BMS provides direct CPU and GPU access with high-speed network interfaces","BMS is the cheapest option","BMS requires no OS management"],ans:1,exp:"BMS is ideal for HPC because it provides <b>direct CPU and GPU access</b> with <b>high-speed network interfaces</b> — enabling AI/ML, big data, scientific simulations, and financial modeling."},
+  {q:"Which service does Auto Scaling integrate with to distribute traffic and auto-register new instances?",opts:["VPC","ELB (Elastic Load Balancer)","IMS","Cloud Eye"],ans:1,exp:"AS integrates with <b>ELB (Elastic Load Balancer)</b> to distribute traffic, automatically register new instances added by AS, and remove terminated ones — ensuring no downtime."},
+  {q:"Where does IMS store multiple copies of image files to ensure data reliability and durability?",opts:["EVS","OBS (Object Storage Service)","ECS local disk","VPC"],ans:1,exp:"IMS stores multiple copies of image files in <b>OBS (Object Storage Service)</b> for excellent data reliability and durability."},
+  {q:"CCE provides high availability for the cluster control plane using how many master nodes and where?",opts:["1 node in a single AZ","3 nodes in different Availability Zones","2 nodes in the same AZ","5 nodes across different regions"],ans:1,exp:"CCE deploys <b>3 master nodes in different Availability Zones</b> so the control plane stays online even if one AZ fails."},
+  {q:"FunctionGraph billing is based on which of the following?",opts:["Hours the server is provisioned","Number of execution requests and execution duration","Number of containers running","GB of storage consumed per month"],ans:1,exp:"FunctionGraph uses <b>pay-per-execution billing</b> — you pay for the number of execution requests and how long each runs. No cost when idle."},
+  {q:"Which ECS instance type is recommended for precision marketing, e-commerce, and mobile apps?",opts:["General-computing","Memory-optimized","GPU-accelerated","Disk-intensive"],ans:1,exp:"<b>Memory-optimized ECSs</b> are best for e-commerce and precision marketing — they feature large memory, ultra-high I/O EVS disks, and appropriate bandwidths."},
+
+  // C answers (idx 2) — 15 questions
+  {q:"Which Huawei Cloud service allows you to build a dedicated network, configure subnets, and communicate with external networks via EIP?",opts:["EVS","IMS","VPC (Virtual Private Cloud)","Cloud Eye"],ans:2,exp:"<b>VPC (Virtual Private Cloud)</b> lets you build a dedicated network, configure subnets and security groups, and communicate externally via an EIP with assigned bandwidth."},
+  {q:"Which Huawei Cloud service creates images for ECSs and enables rapid service deployment from private images?",opts:["CBR","Cloud Eye","IMS (Image Management Service)","EVS"],ans:2,exp:"<b>IMS (Image Management Service)</b> allows you to create images for ECSs or create ECSs from private images for rapid service deployment."},
+  {q:"Which of the following is a core characteristic of BMS architecture?",opts:["Shared hypervisor across tenants","Multi-tenant hardware","No hypervisor layer with direct OS-to-hardware interaction","Automatic horizontal scaling"],ans:2,exp:"BMS core characteristics include: dedicated physical CPU/memory/storage, <b>no hypervisor layer</b>, and <b>direct OS-to-hardware interaction</b>."},
+  {q:"An AS policy adds capacity every 8 AM and reduces it every 10 PM. Which policy type is this?",opts:["Alarm-based scaling","Manual scaling","Scheduled scaling","Predictive scaling"],ans:2,exp:"<b>Scheduled scaling</b> is triggered at specific times — for example, increasing capacity every 8 AM and decreasing every 10 PM."},
+  {q:"Which IMS image type is shared between different Huawei Cloud accounts for multi-team environments?",opts:["Public image","Private image","Shared image","Marketplace image"],ans:2,exp:"<b>Shared images</b> are shared between different Huawei Cloud accounts — ideal for multi-team or multi-department environments that need a common image."},
+  {q:"What is the role of Worker Nodes in CCE architecture?",opts:["Scheduling containers and managing API calls","Monitoring cluster state and health","Running application containers and hosting Pods","Storing images for containerized applications"],ans:2,exp:"<b>Worker Nodes</b> run the actual application containers and host Pods. The Master Node handles scheduling, API calls, and cluster monitoring."},
+  {q:"DeH differs from standard ECS in which key way?",opts:["DeH has no hypervisor like BMS","DeH uses a shared physical host like ECS","DeH is a physically isolated host dedicated to one tenant — the physical server is not shared with other customers","DeH only supports one virtual machine per host"],ans:2,exp:"<b>DeH</b> is a physically isolated host dedicated to one tenant. Unlike standard ECS, the physical server is NOT shared with other customers — but unlike BMS, virtualization still exists for that tenant."},
+  {q:"FunctionGraph is interconnected with which service to view graphical monitoring information?",opts:["LTS","Cloud Eye","AOM (Application Operations Management)","VPC"],ans:2,exp:"FunctionGraph is interconnected with <b>AOM (Application Operations Management)</b> to view graphical monitoring information."},
+  {q:"Which Huawei Cloud service backs up EVS disks and ECS instances by creating snapshots for restoration?",opts:["IMS","VPC","CBR (Cloud Backup and Recovery)","Cloud Eye"],ans:2,exp:"<b>CBR (Cloud Backup and Recovery)</b> backs up data from EVS disks and ECSs and creates snapshots for restoring them."},
+  {q:"According to the PDF, when should you NOT use BMS?",opts:["When workloads require direct hardware access","When virtualization overhead is unacceptable","When workloads are small or variable and cost efficiency is the priority","When hardware isolation is required for compliance"],ans:2,exp:"Avoid BMS when: <b>workloads are small or variable, cost efficiency is priority, horizontal scaling is needed frequently, and virtualization is acceptable</b>. Use ECS instead."},
+  {q:"The AS Scaling Configuration defines which of the following?",opts:["Minimum and maximum instance counts","Alarm thresholds for metric triggers","Instance type, OS image, disk size, and network settings for new servers","The schedule for scaling events"],ans:2,exp:"<b>Scaling Configuration</b> is the template used when AS launches new instances — it defines instance flavor, OS image, disk size, and network settings."},
+  {q:"Which encryption service does IMS use to secure private images?",opts:["IAM","VPC ACLs","KMS (Key Management Service)","Security groups"],ans:2,exp:"Private IMS images can be encrypted using <b>envelope encryption provided by KMS (Key Management Service)</b>."},
+  {q:"Which programming languages does FunctionGraph support according to the PDF?",opts:["Ruby, Swift, and Kotlin","Java and Python only","Node.js, Python, Java, C#, PHP, and Go","Only compiled languages like C and C++"],ans:2,exp:"FunctionGraph supports: <b>Node.js, Python, Java, C#, PHP, and Go</b>."},
+  {q:"A CCE advantage stated in the PDF about AI computing performance is:",opts:["CCE reduces storage costs by 50%","CCE replaces the need for any networking configuration","AI computing is 3x to 5x better with NUMA BMSs and high-speed InfiniBand network cards","CCE provides free GPU resources for AI workloads"],ans:2,exp:"According to the PDF, <b>AI computing is 3x to 5x better with NUMA BMSs and high-speed InfiniBand network cards</b> in CCE."},
+  {q:"Which ECS instance type is recommended for MapReduce and Hadoop workloads?",opts:["Memory-optimized","General-computing","Disk-intensive","GPU-accelerated"],ans:2,exp:"<b>Disk-intensive ECSs</b> handle high-performance sequential read/write on ultra-large datasets in local storage — ideal for MapReduce and Hadoop."},
+
+  // D answers (idx 3) — 15 questions
+  {q:"Which Huawei Cloud service provides scalable virtual servers, letting users select CPU, memory, storage, and OS on demand?",opts:["BMS","DeH","CCE","ECS (Elastic Cloud Server)"],ans:3,exp:"<b>ECS (Elastic Cloud Server)</b> is Huawei Cloud's IaaS compute service that provides scalable virtual servers — users select CPU, memory, storage, and OS on demand without managing physical hardware."},
+  {q:"Which ECS instance type is recommended for graphics rendering and engineering drawing?",opts:["Memory-optimized","General-computing","Disk-intensive","GPU-accelerated (GACS)"],ans:3,exp:"<b>GPU-accelerated ECSs (GACS)</b> are designed for graphics rendering and engineering drawing — providing cost-effective graphics acceleration and high GPU performance."},
+  {q:"A cloud engineer evaluates ECS for a project. Which is NOT one of the five engineering evaluation factors in the PDF?",opts:["Performance","Scalability","Availability","Brand reputation"],ans:3,exp:"The five ECS engineering evaluation factors from the PDF are: <b>Performance, Scalability, Availability, Security, and Cost</b>. Brand reputation is not listed."},
+  {q:"BMS integrates with which Huawei Cloud services according to the PDF?",opts:["IMS and CCE only","Cloud Eye and AS only","ECS and DeH only","VPC, OBS, EVS, and security groups"],ans:3,exp:"Despite having no hypervisor, BMS still integrates with: <b>VPC (Virtual Private Cloud), OBS (Object Storage Service), EVS (Elastic Volume Service), and security groups</b>."},
+  {q:"Which BMS feature eliminates the 'noisy neighbor' effect?",opts:["Elastic provisioning","High-speed network interfaces","Integration with VPC","Dedicated physical resources allocated entirely to one tenant"],ans:3,exp:"BMS provides <b>dedicated physical resources</b> — the entire server is allocated to one tenant, eliminating the 'noisy neighbor' effect and ensuring predictable performance."},
+  {q:"Auto Scaling integrates with Cloud Eye to monitor which metrics?",opts:["Only CPU usage","Only network traffic","Only disk I/O","CPU, memory, network traffic, and disk I/O"],ans:3,exp:"Cloud Eye monitors <b>CPU usage, memory usage, network traffic, and disk I/O</b> — these metrics trigger AS alarm-based scaling policies."},
+  {q:"Which IMS image type is provided by third-party vendors with pre-installed software packages?",opts:["Public image","Private image","Shared image","Marketplace image"],ans:3,exp:"<b>Marketplace images</b> are provided by third-party vendors with pre-installed software packages — used for quick deployment of commercial applications."},
+  {q:"In the DeH comparison table from the PDF, which service has 'No' for physical sharing, 'Yes' for virtualization, and 'Yes' for multiple VMs?",opts:["ECS","BMS","FunctionGraph","Dedicated Host (DeH)"],ans:3,exp:"From the PDF: <b>DeH</b> = No physical sharing (dedicated), Yes virtualization (hypervisor present), Yes multiple VMs — distinguishing it from both ECS (shared) and BMS (no hypervisor, single OS)."},
+  {q:"FunctionGraph executes code based on which trigger method?",opts:["Only on a fixed schedule","Only when manually invoked by an admin","Only when CPU usage is high","API calls or cloud service events"],ans:3,exp:"FunctionGraph functions are triggered via <b>API calls or cloud service events</b> — you call RESTful APIs or use cloud event sources to trigger function execution."},
+  {q:"Which ECS key feature allows CPU and RAM to be scaled vertically and instances to be added or removed horizontally?",opts:["High availability","Security features","Multiple OS support","Elasticity"],ans:3,exp:"<b>Elasticity</b> is an ECS key feature — it allows vertical scaling of CPU and RAM and horizontal scaling by adding or removing instances. It also supports auto-scaling."},
+  {q:"A bank must deploy 10 virtual servers with hardware isolation from other tenants due to regulatory requirements. Which service is most appropriate?",opts:["ECS (shared host)","BMS","FunctionGraph","Dedicated Host (DeH)"],ans:3,exp:"<b>DeH</b> is correct — it provides single-tenant physical isolation (satisfying compliance) while still allowing multiple VMs to run on the dedicated host."},
+  {q:"Which IMS scenario involves importing local images to the cloud platform to quickly create cloud servers?",opts:["Backing up server environments","Deploying a specific software environment","Using Marketplace images for commercial apps","Migrating servers to the cloud"],ans:3,exp:"The <b>Migrating servers to the cloud</b> IMS scenario: import local images to the cloud platform and use them to quickly create cloud servers for service migration."},
+  {q:"Which Huawei Cloud service is Huawei Cloud's managed container orchestration service based on Kubernetes?",opts:["ECS","BMS","FunctionGraph","CCE (Cloud Container Engine)"],ans:3,exp:"<b>CCE (Cloud Container Engine)</b> is Huawei Cloud's managed container orchestration service based on Kubernetes — managing containers the way ECS manages virtual machines."},
+  {q:"FunctionGraph auto-scaling happens based on which of the following?",opts:["Admin manual trigger only","A fixed number of instances defined at setup","CPU threshold set by Cloud Eye","Number of requests — scales automatically without configuration"],ans:3,exp:"During function execution, FunctionGraph <b>scales automatically based on the number of requests without any configuration needed</b>."},
+  {q:"Which is an AS advantage related to fault tolerance?",opts:["AS increases CPU of individual servers","AS reduces storage costs automatically","AS adds bandwidth when CPU exceeds 80%","AS monitors instances and replaces unhealthy ones with new ones"],ans:3,exp:"AS's <b>High Fault Tolerance</b> advantage: AS monitors instances in a Scaling Group and automatically <b>replaces any unhealthy instances</b> it detects with new ones."},
 ];
 
 // ══ STATE ══
-let playerName='',mcqDeck=[],essayDeck=[];
-let mcqIdx=0,mcqCorrect=0,mcqWrong=[],answered=false;
-let essayIdx=0,essayPts=0;
+let playerName='', mcqDeck=[];
+let mcqIdx=0, mcqCorrect=0, mcqWrong=[], answered=false;
 
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-function showS(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function shuffle(a){
+  const b=[...a];
+  for(let i=b.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [b[i],b[j]]=[b[j],b[i]];
+  }
+  return b;
+}
+
+// shuffleQuestion: randomize option order per question at runtime
+function shuffleQuestion(q){
+  const indices=[0,1,2,3];
+  for(let i=3;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [indices[i],indices[j]]=[indices[j],indices[i]];
+  }
+  const newOpts=indices.map(i=>q.opts[i]);
+  const newAns=indices.indexOf(q.ans);
+  return {...q, opts:newOpts, ans:newAns};
+}
+
+function showS(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 function goLB(){showS('s-lb');loadLB();}
 function loadLB(){if(window._fbLoad)window._fbLoad();else document.getElementById('lb-body').innerHTML='<p class="lb-empty">Firebase not loaded.</p>';}
 
@@ -380,24 +324,22 @@ function startGame(){
   const n=document.getElementById('pname').value.trim();
   if(!n){document.getElementById('pname').focus();return;}
   playerName=n;
-  mcqDeck=shuffle(ALL_MCQ);
-  essayDeck=shuffle(ALL_ESSAY);
-  mcqIdx=0;mcqCorrect=0;mcqWrong=[];answered=false;
-  essayIdx=0;essayPts=0;
+  // shuffle question order, then shuffle each question's options
+  mcqDeck=shuffle(ALL_MCQ).map(q=>shuffleQuestion(q));
+  mcqIdx=0; mcqCorrect=0; mcqWrong=[]; answered=false;
   document.getElementById('mcq-chip').textContent='✦ '+playerName;
-  document.getElementById('essay-chip').textContent='✦ '+playerName;
   showS('s-mcq');
   renderQ();
 }
 
 function renderQ(){
   const d=mcqDeck[mcqIdx];
-  document.getElementById('mcq-of').textContent=(mcqIdx+1)+' / 30';
-  document.getElementById('qnum').textContent='Question '+(mcqIdx+1)+' of 30';
+  document.getElementById('mcq-of').textContent=(mcqIdx+1)+' / 60';
+  document.getElementById('qnum').textContent='Question '+(mcqIdx+1)+' of 60';
   document.getElementById('qtext').textContent=d.q;
   document.getElementById('qexp').innerHTML=d.exp;
   document.getElementById('qexp').className='exp';
-  document.getElementById('mcq-prog').style.width=(mcqIdx/30*100)+'%';
+  document.getElementById('mcq-prog').style.width=(mcqIdx/60*100)+'%';
   document.getElementById('mcq-sc').textContent=mcqCorrect;
   answered=false;
   document.getElementById('btn-next').className='btn-next';
@@ -419,128 +361,39 @@ function pick(idx,btn){
   const d=mcqDeck[mcqIdx];
   document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
   if(idx===d.ans){btn.classList.add('correct');mcqCorrect++;}
-  else{btn.classList.add('wrong');document.querySelectorAll('.opt')[d.ans].classList.add('correct');mcqWrong.push({num:mcqIdx+1,q:d.q});}
+  else{
+    btn.classList.add('wrong');
+    document.querySelectorAll('.opt')[d.ans].classList.add('correct');
+    mcqWrong.push({num:mcqIdx+1,q:d.q});
+  }
   document.getElementById('qexp').classList.add('show');
   document.getElementById('mcq-sc').textContent=mcqCorrect;
   const nb=document.getElementById('btn-next');
   nb.classList.add('show');
-  nb.textContent=mcqIdx<29?'Next →':'Go to Essay Questions →';
+  nb.textContent=mcqIdx<59?'Next →':'See Results →';
 }
 
-function nextQ(){mcqIdx++;if(mcqIdx>=30)startEssay();else renderQ();}
-
-function startEssay(){essayIdx=0;essayPts=0;showS('s-essay');renderE();}
-
-function renderE(){
-  const d=essayDeck[essayIdx];
-  document.getElementById('essay-of').textContent=(essayIdx+1)+' / 5';
-  document.getElementById('eqnum').textContent='Essay '+(essayIdx+1)+' of 5';
-  document.getElementById('eqtext').textContent=d.q;
-  document.getElementById('eta').value='';
-  document.getElementById('eta').disabled=false;
-  document.getElementById('eta').style.borderColor='';
-  document.getElementById('btn-sub').style.display='block';
-  document.getElementById('btn-sub').disabled=false;
-  document.getElementById('loading').className='loading';
-  document.getElementById('aibox').className='ai-box';
-  document.getElementById('btn-enext').style.display='none';
-  document.getElementById('modelblock').className='model-block';
-  document.getElementById('essay-sc').textContent=essayPts;
-  document.getElementById('essay-prog').style.width=(essayIdx/5*100)+'%';
+function nextQ(){
+  mcqIdx++;
+  if(mcqIdx>=60)showResults();
+  else renderQ();
 }
-
-async function submitEssay(){
-  const ans=document.getElementById('eta').value.trim();
-  if(ans.length<10){
-    document.getElementById('eta').style.borderColor='#f87171';
-    setTimeout(()=>document.getElementById('eta').style.borderColor='',1800);
-    return;
-  }
-  const d=essayDeck[essayIdx];
-  document.getElementById('btn-sub').disabled=true;
-  document.getElementById('btn-sub').style.display='none';
-  document.getElementById('eta').disabled=true;
-  document.getElementById('loading').className='loading show';
-
-  let score=0,feedback='';
-  try{
-    const prompt=`You are grading a student essay answer for a Huawei Cloud Compute Services quiz (Week 12, BulSU Emerging Technologies in CPE).
-
-QUESTION: ${d.q}
-
-MODEL ANSWER (for reference only): ${d.model}
-
-GRADING RUBRIC: ${d.rubric}
-
-STUDENT ANSWER: ${ans}
-
-Grade the student on a scale of 0 to 3 strictly following the rubric. Be encouraging but accurate. Respond ONLY with valid JSON, no markdown, no extra text:
-{"score":<integer 0-3>,"feedback":"<2-3 sentences: what they got right, what was missing or incorrect, one specific tip to improve>"}`;
-
-    const res=await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "x-api-key":"YOUR_ANTHROPIC_API_KEY_HERE",
-        "anthropic-version":"2023-06-01",
-        "anthropic-dangerous-direct-browser-access":"true"
-      },
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:350,messages:[{role:"user",content:prompt}]})
-    });
-    const data=await res.json();
-    const raw=data.content[0].text.trim().replace(/```json|```/g,'').trim();
-    const parsed=JSON.parse(raw);
-    score=Math.min(3,Math.max(0,parseInt(parsed.score)));
-    feedback=parsed.feedback;
-  }catch(e){
-    score=0;
-    feedback="The AI grader couldn't connect. Make sure your Anthropic API key is added to the HTML file. Your answer has been noted.";
-  }
-
-  document.getElementById('loading').className='loading';
-  essayPts+=score;
-  document.getElementById('essay-sc').textContent=essayPts;
-
-  const sr=document.getElementById('starsrow');
-  const starColor=score===3?'#fbbf24':score===2?'#c084fc':score===1?'#f472b6':'#3a1a4a';
-  const scoreLabel=score===3?'Full marks!':score===2?'Almost there!':score===1?'Partial credit':'Needs work';
-  sr.innerHTML=`<span class="snum">${score}/3</span><span style="font-size:13px;color:var(--muted)">${scoreLabel}</span>`;
-
-  document.getElementById('aitext').innerHTML=feedback;
-  document.getElementById('modelblock').textContent=d.model;
-  document.getElementById('aibox').className='ai-box show';
-
-  const nb=document.getElementById('btn-enext');
-  nb.style.display='block';
-  nb.textContent=essayIdx<4?'Next Essay →':'See My Final Results →';
-}
-
-function toggleModel(btn){
-  const el=document.getElementById('modelblock');
-  const on=el.classList.toggle('show');
-  btn.textContent=on?'Hide model answer':'Show model answer';
-}
-
-function nextEssay(){essayIdx++;if(essayIdx>=5)showResults();else renderE();}
 
 async function showResults(){
   showS('s-results');
-  const total=mcqCorrect+essayPts;
-  const pct=Math.round(total/45*100);
-
-  document.getElementById('rbig').innerHTML=total+'<span class="score-den"> /45</span>';
-  document.getElementById('rpct').textContent=pct+'% overall';
+  const pct=Math.round(mcqCorrect/60*100);
+  document.getElementById('rbig').innerHTML=mcqCorrect+'<span class="score-den"> /60</span>';
+  document.getElementById('rpct').textContent=pct+'% — '+playerName;
   document.getElementById('rcor').textContent=mcqCorrect;
-  document.getElementById('rwrong').textContent=30-mcqCorrect;
-  document.getElementById('ressay').textContent=essayPts;
+  document.getElementById('rwrong').textContent=60-mcqCorrect;
 
   let grade,msg,color,bg;
   if(pct>=93){grade='A+';msg='Outstanding — fully exam-ready!';color='#fbbf24';bg='rgba(251,191,36,0.12)';}
   else if(pct>=85){grade='A';msg='Excellent! Just polish a few weak spots.';color='#86efac';bg='rgba(134,239,172,0.1)';}
   else if(pct>=78){grade='B+';msg='Great job! A bit more review and you\'re set.';color='#c084fc';bg='rgba(192,132,252,0.1)';}
   else if(pct>=70){grade='B';msg='Good foundation — tighten the weak areas.';color='#a78bba';bg='rgba(167,139,186,0.1)';}
-  else if(pct>=60){grade='C';msg='You need focused review before the quiz.';color='#fb923c';bg='rgba(251,146,60,0.1)';}
-  else{grade='D';msg='More study needed — go back to your notes!';color='#f87171';bg='rgba(248,113,113,0.1)';}
+  else if(pct>=60){grade='C';msg='You need more focused review before the quiz.';color='#fb923c';bg='rgba(251,146,60,0.1)';}
+  else{grade='D';msg='Go back to your notes — more study needed!';color='#f87171';bg='rgba(248,113,113,0.1)';}
 
   const gt=document.getElementById('rgrade');
   gt.textContent=grade+' · '+msg;
@@ -549,7 +402,7 @@ async function showResults(){
   const mi=document.getElementById('missed');
   mi.innerHTML='';
   if(mcqWrong.length===0){
-    mi.innerHTML='<div class="mitem" style="color:var(--correct)">✦ Perfect MCQ score — nothing missed!</div>';
+    mi.innerHTML='<div class="mitem" style="color:var(--correct)">✦ Perfect score — nothing missed!</div>';
   }else{
     mcqWrong.forEach(m=>{
       const div=document.createElement('div');
@@ -559,10 +412,13 @@ async function showResults(){
     });
   }
 
-  if(window._fbSave) await window._fbSave(playerName,total,mcqCorrect,essayPts);
+  if(window._fbSave) await window._fbSave(playerName, mcqCorrect);
 }
 
-function restart(){document.getElementById('pname').value='';showS('s-splash');}
+function restart(){
+  document.getElementById('pname').value='';
+  showS('s-splash');
+}
 </script>
 </body>
 </html>
