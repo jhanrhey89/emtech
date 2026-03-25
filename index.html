@@ -31,7 +31,6 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .btn-main{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0a0010;border:none;border-radius:12px;padding:1rem 2.5rem;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;align-self:flex-start;}
 .btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(244,114,182,0.35);}
 .btn-main:active{transform:translateY(0);}
-.btn-main:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
 .btn-ghost{background:transparent;border:1.5px solid var(--accent2);color:var(--accent2);border-radius:10px;padding:0.75rem 1.5rem;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;transition:background 0.15s,color 0.15s;}
 .btn-ghost:hover{background:var(--accent2);color:#0a0010;}
 .qheader{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;gap:0.75rem;flex-wrap:wrap;}
@@ -96,16 +95,14 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 </style>
 </head>
 <body>
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
-<div class="orb orb3"></div>
+<div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
 
 <!-- SPLASH -->
 <div class="screen active" id="s-splash">
   <div class="eyebrow">Elective 4 · Finals · DevOps &amp; Docker</div>
   <h1 class="big-title">Elective 4<br><em>Finals Quiz</em></h1>
   <div class="divider"></div>
-  <p class="sub-text">100 multiple-choice questions covering DevOps Fundamentals, CI/CD, Monitoring, Containers, Kubernetes, and Docker. Questions and answer choices shuffle every run.</p>
+  <p class="sub-text">100 multiple-choice questions covering DevOps Fundamentals, CI/CD, Monitoring, Containers, Kubernetes, and Docker. Questions and choices shuffle every run.</p>
   <div class="pills">
     <span class="pill"><b>100 MCQ</b></span>
     <span class="pill"><b>Shuffled</b> every run</span>
@@ -143,8 +140,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   <h2 class="big-title" style="margin-bottom:0.4rem;">Top <em>Scores</em></h2>
   <p class="sub-text" style="margin-bottom:1.5rem;">Live scores synced from Firebase.</p>
   <div class="lb-wrap">
-    <div class="lb-hdr">
-      <h2><em>Leaderboard</em></h2>
+    <div class="lb-hdr"><h2><em>Leaderboard</em></h2>
       <button class="btn-ghost" onclick="loadLB()" style="padding:0.5rem 1rem;font-size:13px;">Refresh</button>
     </div>
     <div id="lb-body"><p class="lb-empty">Loading scores…</p></div>
@@ -175,25 +171,13 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   </div>
 </div>
 
-<!-- Firebase -->
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-const firebaseConfig = {
-  apiKey: "AIzaSyB_LuVB4AfiBXHbA3spNXSAlum12-bMg68",
-  authDomain: "emtech-8384c.firebaseapp.com",
-  projectId: "emtech-8384c",
-  storageBucket: "emtech-8384c.firebasestorage.app",
-  messagingSenderId: "971709817948",
-  appId: "1:971709817948:web:bda99e63585d6457b83299"
-};
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,addDoc,getDocs,query,orderBy,limit,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const cfg={apiKey:"AIzaSyB_LuVB4AfiBXHbA3spNXSAlum12-bMg68",authDomain:"emtech-8384c.firebaseapp.com",projectId:"emtech-8384c",storageBucket:"emtech-8384c.firebasestorage.app",messagingSenderId:"971709817948",appId:"1:971709817948:web:bda99e63585d6457b83299"};
 let db=null;
-try{const app=initializeApp(firebaseConfig);db=getFirestore(app);}catch(e){console.warn('Firebase:',e);}
-window._fbSave=async(name,score)=>{
-  if(!db)return;
-  try{await addDoc(collection(db,"scores_elective4"),{name,total:score,createdAt:serverTimestamp()});}catch(e){console.warn(e);}
-};
+try{const app=initializeApp(cfg);db=getFirestore(app);}catch(e){console.warn(e);}
+window._fbSave=async(name,score)=>{if(!db)return;try{await addDoc(collection(db,"scores_elective4"),{name,total:score,createdAt:serverTimestamp()});}catch(e){console.warn(e);}};
 window._fbLoad=async()=>{
   const el=document.getElementById('lb-body');
   if(!db){el.innerHTML='<p class="lb-err">Firebase not connected.</p>';return;}
@@ -203,264 +187,151 @@ window._fbLoad=async()=>{
     const snap=await getDocs(q);
     if(snap.empty){el.innerHTML='<p class="lb-empty">No scores yet — be the first!</p>';return;}
     let rows='',rank=1;
-    snap.forEach(doc=>{
-      const d=doc.data();
-      const rc=rank===1?'r1':rank===2?'r2':rank===3?'r3':'';
-      rows+=`<tr><td><span class="rank-dot ${rc}">${rank}</span></td><td style="font-weight:500">${d.name||'Anonymous'}</td><td style="color:var(--accent);font-weight:600">${d.total}<span style="color:var(--muted);font-weight:400"> /100</span></td></tr>`;
-      rank++;
-    });
+    snap.forEach(doc=>{const d=doc.data();const rc=rank===1?'r1':rank===2?'r2':rank===3?'r3':'';
+    rows+=`<tr><td><span class="rank-dot ${rc}">${rank}</span></td><td style="font-weight:500">${d.name||'Anonymous'}</td><td style="color:var(--accent);font-weight:600">${d.total}<span style="color:var(--muted);font-weight:400"> /100</span></td></tr>`;rank++;});
     el.innerHTML=`<table class="lb-tbl"><thead><tr><th>#</th><th>Player</th><th>Score</th></tr></thead><tbody>${rows}</tbody></table>`;
-  }catch(e){el.innerHTML='<p class="lb-err">Could not load scores. Check Firestore rules.</p>';}
+  }catch(e){el.innerHTML='<p class="lb-err">Could not load scores.</p>';}
 };
 </script>
 
 <script>
-// Answer key from image (0=A,1=B,2=C,3=D):
-// Q1=B(1), Q2=C(2), Q3=B(1), Q4=D(3), Q5=C(2), Q6=B(1), Q7=C(2), Q8=B(1), Q9=C(2), Q10=C(2)
-// Q11=B(1), Q12=C(2), Q13=B(1), Q14=C(2), Q15=C(2), Q16=B(1), Q17=B(1), Q18=C(2), Q19=C(2), Q20=B(1)
-// Q21=B(1), Q22=C(2), Q23=B(1), Q24=C(2), Q25=D(3), Q26=B(1), Q27=C(2), Q28=B(1), Q29=C(2), Q30=C(2)
-// Q31=B(1), Q32=C(2), Q33=B(1), Q34=B(1), Q35=C(2), Q36=C(2), Q37=B(1), Q38=C(2), Q39=A(0), Q40=C(2)
-// Q41=C(2), Q42=B(1), Q43=B(1), Q44=C(2), Q45=B(1), Q46=C(2), Q47=B(1), Q48=B(1), Q49=B(1), Q50=C(2)
-// Q51=B(1), Q52=C(2), Q53=B(1), Q54=B(1), Q55=B(1), Q56=B(1), Q57=B(1), Q58=B(1), Q59=B(1), Q60=C(2)
-// Q61=B(1), Q62=C(2), Q63=B(1), Q64=C(2), Q65=C(2), Q66=C(2), Q67=C(2), Q68=C(2), Q69=B(1), Q70=C(2)
-// Q71=C(2), Q72=B(1), Q73=B(1), Q74=C(2), Q75=B(1), Q76=C(2), Q77=D(3), Q78=B(1), Q79=C(2), Q80=C(2)
-// Q81=B(1), Q82=B(1), Q83=B(1), Q84=C(2), Q85=B(1), Q86=C(2), Q87=B(1), Q88=B(1), Q89=B(1), Q90=C(2)
-// Q91=C(2), Q92=D(3), Q93=B(1), Q94=C(2), Q95=B(1), Q96=D(3), Q97=B(1), Q98=B(1), Q99=B(1), Q100=B(1)
+const ALL_MCQ=[
+// PART 1 — DevOps Fundamentals
+{q:"It is the combination of Software Development and IT Operations working together to break down silos and deliver software faster.",opts:["Scrum","Agile","Waterfall","DevOps"],ans:3,exp:"<b>DevOps</b> = Dev + Ops. It bridges the traditional gap between the team that writes code and the team that runs it."},
+{q:"Developers: 'My code works.' Ops: 'Your code broke the server.' QA: 'Found this too late.' This situation describes which model?",opts:["DevOps","Continuous Integration","Pipeline","Siloed"],ans:3,exp:"<b>Siloed</b> teams work separately, producing blame culture, slow fixes, and bugs found too late."},
+{q:"It is NOT one of the three pillars of DevOps.",opts:["Software Engineering","Technology Operations","Quality Assurance","Financial Management"],ans:3,exp:"The three pillars are <b>Software Engineering, Technology Operations, and QA</b>. Financial Management is not included."},
+{q:"In the DevOps Venn diagram, DevOps sits at this location.",opts:["Only in Software Engineering","Only in Quality Assurance","Only in Technology Operations","At the intersection of all three pillars"],ans:3,exp:"DevOps lives at the <b>intersection of Software Engineering, Tech Operations, and QA</b>."},
+{q:"This pillar of DevOps covers development, coding, and testing automation — the 'Dev' side.",opts:["Technology Operations","Quality Assurance","Financial Management","Software Engineering"],ans:3,exp:"<b>Software Engineering</b> = coding, building, and automating tests."},
+{q:"This pillar of DevOps covers infrastructure management, deployment, monitoring, and incident response — the 'Ops' side.",opts:["Software Engineering","Quality Assurance","Financial Management","Technology Operations"],ans:3,exp:"<b>Technology Operations</b> = keeping systems running reliably in production."},
+{q:"In DevOps, QA is integrated into every stage of the pipeline — not just a final gate. This approach is called:",opts:["Manual Testing","Final Gate Testing","Regression Testing","Continuous Testing"],ans:3,exp:"<b>Continuous Testing</b> = automated tests at every stage of the pipeline, not just the end."},
+{q:"It is a core DevOps principle that eliminates repetitive manual steps in building, testing, and deploying software.",opts:["Individual Code Ownership","Infrequent Large Releases","Separate Dev and Ops Teams","Automation"],ans:3,exp:"<b>Automation</b> is central to DevOps — it removes slow, error-prone manual work."},
+{q:"A team merges code into a shared repository multiple times a day, and every push automatically triggers a build and test run. This is called:",opts:["Manual Deployment","Waterfall Development","Continuous Testing","Continuous Integration"],ans:3,exp:"<b>Continuous Integration (CI)</b> = merge often, build and test automatically after every push."},
+{q:"It is the traditional gap that led to the creation of DevOps — between those who write code and those who deploy and maintain servers.",opts:["Too Many Developers","Lack of Cloud Computing","Both Teams Had the Same Goals","The Dev and Ops Divide"],ans:3,exp:"DevOps was created to fix the <b>Dev vs. Ops divide</b> that caused slow, unreliable software releases."},
 
-const ALL_MCQ = [
-  // Q1 ans=B(1)
-  {q:"What does DevOps combine?",opts:["Design and Marketing","Software Development (Dev) and IT Operations (Ops)","Quality Assurance and Security","Frontend and Backend Development"],ans:1,exp:"<b>DevOps combines Software Development (Dev) and IT Operations (Ops)</b> — bridging the traditional gap between the two teams."},
-  // Q2 ans=C(2)
-  {q:"Which of the following best describes DevOps?",opts:["A programming language","A hardware management system","A culture, set of practices, and tools that automate and integrate processes","A project management methodology only"],ans:2,exp:"<b>DevOps is a culture, set of practices, and tools</b> that automate and integrate the processes between software development and IT operations."},
-  // Q3 ans=B(1)
-  {q:"Why does DevOps exist?",opts:["Because developers and operations had the same goals","Because there was a traditional divide where developers write code and operations deploys and maintains servers","Because companies needed more programmers","Because cloud computing was invented"],ans:1,exp:"DevOps exists because of the <b>traditional divide</b> — developers wrote code and 'threw it over the wall' to operations, causing slow, unreliable releases."},
-  // Q4 ans=D(3)
-  {q:"Which of the following is NOT one of the three pillars of DevOps?",opts:["Software Engineering","Technology Operations","Quality Assurance","Financial Management"],ans:3,exp:"The three pillars of DevOps are <b>Software Engineering, Technology Operations, and Quality Assurance</b>. Financial Management is not a pillar."},
-  // Q5 ans=C(2)
-  {q:"In the DevOps Venn diagram, where does DevOps sit?",opts:["Only in Software Engineering","Only in Quality Assurance","At the intersection of all three pillars","Only in Technology Operations"],ans:2,exp:"DevOps sits <b>at the intersection of Software Engineering, Technology Operations, and Quality Assurance</b> in the Venn diagram."},
-  // Q6 ans=B(1)
-  {q:"What does Software Engineering cover in DevOps?",opts:["Infrastructure management and incident response","Development, coding, and testing automation","Monitoring and deployment","Security scanning and compliance"],ans:1,exp:"<b>Software Engineering</b> in DevOps covers development, coding, and testing automation — the 'Dev' side."},
-  // Q7 ans=C(2)
-  {q:"What does Technology Operations cover in DevOps?",opts:["Coding and unit testing","UI design and prototyping","Infrastructure management, deployment, monitoring, and incident response","Sprint planning and backlog management"],ans:2,exp:"<b>Technology Operations</b> covers infrastructure management, deployment, monitoring, and incident response — the 'Ops' side."},
-  // Q8 ans=B(1)
-  {q:"In DevOps, QA (Quality Assurance) is:",opts:["A final step before deployment","Integrated into every stage of the pipeline (continuous testing)","Only performed by a separate QA team","Only done manually"],ans:1,exp:"In DevOps, QA is <b>integrated into every stage of the pipeline</b> as continuous testing — not just a final gate."},
-  // Q9 ans=C(2)
-  {q:"Which term describes the QA approach in DevOps where automated tests run constantly?",opts:["Manual Testing","Final Gate Testing","Continuous Testing","Regression Testing"],ans:2,exp:"<b>Continuous Testing</b> is the DevOps QA approach where automated tests run at every stage of the pipeline."},
-  // Q10 ans=C(2)
-  {q:"Which is a Core Principle of DevOps?",opts:["Individual ownership of code","Infrequent large releases","Automation of repetitive tasks in building, testing, and deployment","Separate teams for Dev and Ops"],ans:2,exp:"A core DevOps principle is <b>automation of repetitive tasks</b> in building, testing, and deployment — reducing manual effort and human error."},
-  // Q11 ans=B(1)
-  {q:"What is Infrastructure as Code (IaC)?",opts:["Writing application code on servers","Managing and provisioning IT infrastructure using code and configuration files instead of manual processes","A programming language for cloud systems","A type of Docker container"],ans:1,exp:"<b>Infrastructure as Code (IaC)</b> means managing and provisioning IT infrastructure using code and configuration files instead of manual processes."},
-  // Q12 ans=C(2)
-  {q:"Which of the following is a Key Benefit of DevOps?",opts:["Slower release cycles","Increased manual effort","Faster Releases — rapidly delivering new features and updates","More isolated teams"],ans:2,exp:"A key benefit of DevOps is <b>Faster Releases</b> — rapidly delivering new features and updates through automation and collaboration."},
-  // Q13 ans=B(1)
-  {q:"What does 'Continuous Feedback' mean in DevOps?",opts:["Developers get feedback only at the end of a project","Monitoring and feedback loops to quickly identify and fix issues","Customer surveys sent once a year","Weekly team meetings"],ans:1,exp:"<b>Continuous Feedback</b> means monitoring and feedback loops that help teams quickly identify and fix issues throughout the SDLC."},
-  // Q14 ans=C(2)
-  {q:"Which of the following is NOT a key benefit of DevOps?",opts:["Faster Releases","Improved Reliability","Increased Manual Effort","Better Responsiveness"],ans:2,exp:"<b>Increased Manual Effort</b> is NOT a benefit of DevOps — DevOps reduces manual effort through automation."},
-  // Q15 ans=C(2)
-  {q:"The 'Culture Shift' in DevOps refers to:",opts:["Moving from agile to waterfall","Hiring more developers","Moving from siloed, slow processes to a shared mindset focused on speed, quality, and shared ownership","Replacing all manual testers with robots"],ans:2,exp:"The DevOps <b>Culture Shift</b> moves from siloed, slow processes to a shared mindset focused on speed, quality, and shared ownership."},
-  // Q16 ans=B(1)
-  {q:"In Traditional Development, what is the result of siloed teams?",opts:["Faster releases and fewer bugs","Blame culture, slow fixes, and stress during deployment","Better collaboration and shared goals","Frequent small releases"],ans:1,exp:"Siloed teams in Traditional Development create a <b>blame culture, slow fixes, and stress during deployment</b>."},
-  // Q17 ans=B(1)
-  {q:"Which describes the Traditional Development model?",opts:["Integrated, continuous flow with cross-functional teams","Linear, sequential phases (Plan, Develop, Test, Deploy) with distinct teams","Automated deployments and frequent releases","Shared responsibility across all teams"],ans:1,exp:"Traditional Development is <b>linear and sequential</b> — Plan → Develop → Test → Deploy — with distinct, separate teams for each phase."},
-  // Q18 ans=C(2)
-  {q:"Compared to Traditional Development, DevOps releases are:",opts:["Infrequent and large","Only done once a year","Frequent, small, and agile — easier to manage and test","Done only by the operations team"],ans:2,exp:"DevOps releases are <b>frequent, small, and agile</b> — making them easier to manage, test, and roll back if needed."},
-  // Q19 ans=C(2)
-  {q:"In DevOps, who owns code quality, deployment success, and system reliability?",opts:["Only the QA team","Only the developers","Everyone — shared responsibility across all teams","Only the operations team"],ans:2,exp:"In DevOps, <b>everyone shares responsibility</b> — code quality, deployment success, and system reliability are owned by the whole team."},
-  // Q20 ans=B(1)
-  {q:"What is a 'Blameless Postmortem' in DevOps culture?",opts:["A review that focuses on who failed","A review that focuses on what failed, not who failed, in order to learn and improve","A performance evaluation for developers","A security audit after a breach"],ans:1,exp:"A <b>Blameless Postmortem</b> focuses on <b>what failed, not who failed</b> — creating a safe learning environment to prevent future incidents."},
-  // Q21 ans=B(1)
-  {q:"What is the correct order of the DevOps Map Cycle?",opts:["Code → Plan → Build → Test → Deploy → Release → Operate → Monitor → Feedback","Plan → Code → Build → Test → Release → Deploy → Operate → Monitor → Feedback","Build → Plan → Code → Test → Monitor → Deploy → Release → Operate → Feedback","Plan → Build → Code → Deploy → Test → Release → Monitor → Operate → Feedback"],ans:1,exp:"The correct DevOps Map Cycle order is: <b>Plan → Code → Build → Test → Release → Deploy → Operate → Monitor → Feedback</b>."},
-  // Q22 ans=C(2)
-  {q:"Which tools are used in the PLAN stage of the DevOps Map Cycle?",opts:["Docker, Helm","Jenkins, GitHub Actions","Jira, Trello, GitHub Issues, ClickUp","Prometheus, Grafana"],ans:2,exp:"The <b>PLAN stage</b> uses project management tools: <b>Jira, Trello, GitHub Issues, ClickUp</b>."},
-  // Q23 ans=B(1)
-  {q:"Which tools are used in the CODE stage?",opts:["JUnit, Selenium","Git, GitHub, GitLab, Bitbucket","Terraform, Ansible","Slack, PagerDuty"],ans:1,exp:"The <b>CODE stage</b> uses version control tools: <b>Git, GitHub, GitLab, Bitbucket</b>."},
-  // Q24 ans=C(2)
-  {q:"Which tools are used in the BUILD stage?",opts:["Jira, Trello","Prometheus, Grafana","Jenkins, GitHub Actions","Docker, Nexus"],ans:2,exp:"The <b>BUILD stage</b> uses CI tools: <b>Jenkins, GitHub Actions</b>."},
-  // Q25 ans=D(3)
-  {q:"Which tools are used in the TEST stage?",opts:["Terraform, Ansible","Docker, Helm","Slack, PagerDuty","JUnit, Selenium, PyTest, SonarQube, OWASP ZAP"],ans:3,exp:"The <b>TEST stage</b> uses: <b>JUnit, Selenium, PyTest, SonarQube, OWASP ZAP</b>."},
-  // Q26 ans=B(1)
-  {q:"Which tools are used in the RELEASE stage?",opts:["Git, GitHub","Docker, Nexus, GitHub Releases, Helm","Jira, Trello","Prometheus, Grafana"],ans:1,exp:"The <b>RELEASE stage</b> uses artifact management tools: <b>Docker, Nexus, GitHub Releases, Helm</b>."},
-  // Q27 ans=C(2)
-  {q:"Which tools are used in the DEPLOY stage?",opts:["Jenkins, GitHub Actions","Slack, PagerDuty","Kubernetes, ArgoCD","JUnit, Selenium"],ans:2,exp:"The <b>DEPLOY stage</b> uses orchestration tools: <b>Kubernetes, ArgoCD</b>."},
-  // Q28 ans=B(1)
-  {q:"Which tools are used in the OPERATE stage?",opts:["Docker, Nexus","Terraform, Ansible","Jira, Trello","Prometheus, Grafana"],ans:1,exp:"The <b>OPERATE stage</b> uses infrastructure tools: <b>Terraform, Ansible</b>."},
-  // Q29 ans=C(2)
-  {q:"Which tools are used in the MONITOR stage?",opts:["Git, GitHub","Jenkins, GitHub Actions","Prometheus, Grafana","Terraform, Ansible"],ans:2,exp:"The <b>MONITOR stage</b> uses observability tools: <b>Prometheus, Grafana</b>."},
-  // Q30 ans=C(2)
-  {q:"What is the purpose of SonarQube in the TEST stage?",opts:["UI testing","Python testing","Code quality","Security testing"],ans:2,exp:"<b>SonarQube</b> is used in the TEST stage for <b>code quality</b> analysis — detecting bugs, code smells, and technical debt."},
-  // Q31 ans=B(1)
-  {q:"What is a DevOps Pipeline?",opts:["A physical cable connecting servers","An automated workflow that builds, tests, and deploys software through CI and CD","A project management tool","A type of Docker container"],ans:1,exp:"A <b>DevOps Pipeline</b> is an automated workflow that builds, tests, and deploys software through Continuous Integration (CI) and Continuous Delivery/Deployment (CD)."},
-  // Q32 ans=C(2)
-  {q:"What does CI stand for in DevOps?",opts:["Container Integration","Continuous Improvement","Continuous Integration","Code Implementation"],ans:2,exp:"<b>CI = Continuous Integration</b> — the practice of merging code changes into a shared repository multiple times a day with automated builds and tests."},
-  // Q33 ans=B(1)
-  {q:"What does CD stand for in DevOps?",opts:["Container Delivery","Continuous Deployment or Continuous Delivery","Code Development","Centralized Distribution"],ans:1,exp:"<b>CD = Continuous Deployment or Continuous Delivery</b> — the practice of automatically or semi-automatically releasing code to production."},
-  // Q34 ans=B(1)
-  {q:"What is the correct order of the CI/CD Pipeline?",opts:["Build → Commit → Test → Deploy → Notify","Commit change → Trigger build → Build → Notify of build outcome → Run tests → Notify of test outcome → Deliver build to staging → Deploy to production","Deploy → Test → Build → Commit → Notify","Test → Build → Commit → Deploy → Monitor"],ans:1,exp:"The CI/CD pipeline order is: <b>Commit → Trigger build → Build → Notify build outcome → Run tests → Notify test outcome → Deliver to staging → Deploy to production</b>."},
-  // Q35 ans=C(2)
-  {q:"In the CI/CD table, what is the PURPOSE of CI?",opts:["Release code","Deploy to production","Check code","Monitor performance"],ans:2,exp:"The purpose of CI is to <b>check code</b> — automatically building and testing every code commit to catch issues early."},
-  // Q36 ans=C(2)
-  {q:"In the CI/CD table, what is the OUTPUT of CD?",opts:["Tested app","Source code","Running app","Docker image"],ans:2,exp:"The output of CD is a <b>running app</b> — code that has been deployed and is live in production or staging."},
-  // Q37 ans=B(1)
-  {q:"When does CI run?",opts:["After CD passes","After push","After deployment","After monitoring"],ans:1,exp:"CI runs <b>after a push</b> — every time a developer pushes code to the repository, the CI pipeline is automatically triggered."},
-  // Q38 ans=C(2)
-  {q:"What is the RESULT question answered by CI?",opts:["Available?","Deployed?","Works?","Secure?"],ans:2,exp:"CI answers the question: <b>Does it work?</b> — it verifies the code builds and all tests pass."},
-  // Q39 ans=A(0)
-  {q:"What is Continuous Integration (CI)?",opts:["A practice where developers merge code changes into a shared central repository multiple times a day, automatically triggering automated processes","A manual process of checking code","A tool for deploying containers","A monitoring system for production"],ans:0,exp:"<b>Continuous Integration (CI)</b> is a practice where developers merge code into a shared repository multiple times a day, automatically triggering builds and tests."},
-  // Q40 ans=C(2)
-  {q:"What happens in Step 2 (CI runs) of the Continuous Deployment process?",opts:["Package the app, send to server, start the application","Users access the website","Build the app, run tests, and check for errors","Deploy to staging environment"],ans:2,exp:"In Step 2 (CI runs): <b>build the app, run tests, and check for errors</b> — automated quality checks before deployment."},
-  // Q41 ans=C(2)
-  {q:"What happens in Step 3 (CD runs) of the Continuous Deployment process?",opts:["Developer pushes code","CI builds and tests the app","Package the app (Docker), send it to a server/cloud, start the application","Users access the website"],ans:2,exp:"In Step 3 (CD runs): <b>package the app (Docker), send it to a server/cloud, and start the application</b>."},
-  // Q42 ans=B(1)
-  {q:"What is Continuous Delivery?",opts:["Automatically deploying all code without human approval","A practice where software is built to be released anytime, requiring human intervention to approve deployments","A monitoring tool","A type of container registry"],ans:1,exp:"<b>Continuous Delivery</b> means software is always in a releasable state, but <b>requires human approval</b> before deploying to production."},
-  // Q43 ans=B(1)
-  {q:"What is the key difference between Continuous Delivery and Continuous Deployment?",opts:["Continuous Delivery uses Docker; Continuous Deployment uses Kubernetes","Continuous Delivery requires human approval before deploying to production; Continuous Deployment deploys automatically without human intervention","Continuous Delivery is faster than Continuous Deployment","There is no difference"],ans:1,exp:"<b>Continuous Delivery = human approval needed</b>. <b>Continuous Deployment = fully automatic</b>, no human intervention required."},
-  // Q44 ans=C(2)
-  {q:"Which is a CD Requirement?",opts:["Manual testing only","Separate Dev and Ops teams","Robust Automated Testing — comprehensive suite of unit, integration, and end-to-end tests","Infrequent releases"],ans:2,exp:"A CD requirement is <b>Robust Automated Testing</b> — a comprehensive suite of unit, integration, and end-to-end tests to ensure quality."},
-  // Q45 ans=B(1)
-  {q:"Which is also a CD Requirement?",opts:["No monitoring needed","Culture of Accountability — entire team shares responsibility for code quality and release","Only developers are responsible for releases","Manual deployment processes"],ans:1,exp:"Another CD requirement is a <b>Culture of Accountability</b> — the entire team shares responsibility for code quality and the release process."},
-  // Q46 ans=C(2)
-  {q:"What is a Key Aspect of Continuous Deployment?",opts:["Large, infrequent updates","Manual approval for every change","Full Automation — every change that passes automated testing is deployed to production automatically","Separate deployment teams"],ans:2,exp:"A key aspect of Continuous Deployment is <b>Full Automation</b> — every change passing automated tests goes to production without manual steps."},
-  // Q47 ans=B(1)
-  {q:"What is a Benefit of Continuous Deployment?",opts:["Slower release cycles","Reduced Risk — smaller changes are easier to test, debug, and roll back if necessary","More manual work for developers","Less customer feedback"],ans:1,exp:"A benefit of Continuous Deployment is <b>Reduced Risk</b> — smaller, frequent changes are easier to test, debug, and roll back if issues arise."},
-  // Q48 ans=B(1)
-  {q:"What does 'Immediate Feedback' mean as a Key Aspect of Continuous Deployment?",opts:["Customer surveys","Because changes go live instantly, developers receive immediate feedback on performance and bugs","Weekly team standups","Monthly performance reviews"],ans:1,exp:"<b>Immediate Feedback</b> means that because changes go live instantly, developers quickly learn about real-world performance and any bugs in production."},
-  // Q49 ans=B(1)
-  {q:"What is DevOps Monitoring?",opts:["Only monitoring server CPU usage","The continuous tracking and analysis of applications, infrastructure, and the entire SDLC to provide real-time insights","A one-time audit of the system","A weekly report on application performance"],ans:1,exp:"<b>DevOps Monitoring</b> is the continuous tracking and analysis of applications, infrastructure, and the entire SDLC to provide real-time insights."},
-  // Q50 ans=C(2)
-  {q:"Which of the following is NOT one of the 5 Key Components of DevOps Monitoring?",opts:["Application Monitoring","Infrastructure Monitoring","Financial Monitoring","Security Monitoring"],ans:2,exp:"<b>Financial Monitoring</b> is not one of the 5 key components. The components are Application, Infrastructure, Security, Business Metrics, and User Experience Monitoring."},
-  // Q51 ans=B(1)
-  {q:"What are Containers in DevOps?",opts:["Physical servers in a data center","Lightweight, portable executable packages of software that bundle code, libraries, and dependencies, ensuring it runs the same way everywhere","Virtual machines running on cloud platforms","A type of database management system"],ans:1,exp:"<b>Containers</b> are lightweight, portable executable packages that bundle code, libraries, and dependencies — ensuring the app runs the same way in any environment."},
-  // Q52 ans=C(2)
-  {q:"What is Kubernetes (K8s)?",opts:["A programming language for containers","A Docker image registry","An open-source platform that automates deploying, scaling, and managing containerized applications","A CI/CD pipeline tool"],ans:2,exp:"<b>Kubernetes (K8s)</b> is an open-source platform that automates deploying, scaling, and managing containerized applications."},
-  // Q53 ans=B(1)
-  {q:"What is the relationship between Containers and Kubernetes?",opts:["They are the same thing","Containers provide the portable unit of software; Kubernetes manages those containers at scale","Kubernetes replaces Docker containers","Containers manage Kubernetes clusters"],ans:1,exp:"<b>Containers</b> provide the portable unit of software. <b>Kubernetes</b> manages those containers at scale — scheduling, scaling, healing, and load balancing."},
-  // Q54 ans=B(1)
-  {q:"What does Kubernetes automate?",opts:["Writing application code","Deployment, scaling (up or down), self-healing, load balancing, and updates for containerized apps","Creating Dockerfiles","Planning sprints in Jira"],ans:1,exp:"Kubernetes automates: <b>deployment, scaling, self-healing, load balancing, and rolling updates</b> for containerized applications."},
-  // Q55 ans=B(1)
-  {q:"What is Infrastructure as Code (IaC) used for?",opts:["Writing front-end code for web applications","Managing and provisioning IT infrastructure using code and configuration files instead of manual processes","Creating Docker images","Monitoring application performance"],ans:1,exp:"<b>IaC</b> is used for managing and provisioning IT infrastructure using code and configuration files — enabling version control, repeatability, and automation of infrastructure."},
-  // Q56 ans=B(1)
-  {q:"What does Collaboration mean in DevOps?",opts:["Only developers working together","Developers, operations, QA, security, and stakeholders working as ONE team across the entire software lifecycle","Only the operations team managing deployments","Outsourcing work to third-party vendors"],ans:1,exp:"DevOps Collaboration means <b>developers, operations, QA, security, and stakeholders working as one unified team</b> across the entire software lifecycle."},
-  // Q57 ans=B(1)
-  {q:"How do Developers collaborate in DevOps?",opts:["They only write code and hand it off to Ops","They write deployable, testable code and help debug production issues","They manage servers and infrastructure","They only do security checks"],ans:1,exp:"In DevOps, developers <b>write deployable, testable code and actively help debug production issues</b> — not just throwing code over the wall."},
-  // Q58 ans=B(1)
-  {q:"What does 'Shared Tools & Visibility' mean in DevOps collaboration?",opts:["Only managers can see dashboards","Everyone sees the same things — source code, pipelines, logs & metrics; no hidden information","Each team has their own separate tools","Only security teams have access to logs"],ans:1,exp:"<b>Shared Tools & Visibility</b> means everyone — dev, ops, QA, security — sees the same source code, pipelines, logs, and metrics with no hidden information."},
-  // Q59 ans=B(1)
-  {q:"What is ChatOps in DevOps?",opts:["A customer support chat system","Deploying, monitoring, and alerting via chat tools (e.g., Slack notifications from CI/CD)","A team meeting held over video call","A documentation tool"],ans:1,exp:"<b>ChatOps</b> integrates DevOps workflows into chat tools — deploying, monitoring, and sending alerts via Slack or similar platforms."},
-  // Q60 ans=C(2)
-  {q:"What is the result of Traditional (Siloed) collaboration?",opts:["Faster releases, fewer failures, calm deployments","Shared goals and shared responsibility","Blame culture, slow fixes, and stress during deployment","Automated pipelines and continuous feedback"],ans:2,exp:"Traditional siloed collaboration results in <b>blame culture, slow fixes, and stress during deployment</b> — each team protects its own silo."},
-  // Q61 ans=B(1)
-  {q:"What type of architecture does Docker use?",opts:["Peer-to-peer architecture","Client-server architecture","Monolithic architecture","Microkernel architecture"],ans:1,exp:"Docker uses a <b>client-server architecture</b> — the Docker client communicates with the Docker daemon (server) to build, run, and manage containers."},
-  // Q62 ans=C(2)
-  {q:"What is the Docker daemon (dockerd)?",opts:["A command-line tool for running Docker commands","A registry that stores Docker images","A background process that listens for Docker API requests and manages Docker objects such as images, containers, networks, and volumes","A Docker container running in the background"],ans:2,exp:"The <b>Docker daemon (dockerd)</b> is a background process that listens for Docker API requests and manages Docker objects — images, containers, networks, and volumes."},
-  // Q63 ans=B(1)
-  {q:"How do the Docker client and daemon communicate?",opts:["Through FTP","Through REST API, over UNIX sockets or a network interface","Through SSH only","Through Bluetooth"],ans:1,exp:"The Docker client and daemon communicate via <b>REST API over UNIX sockets or a network interface</b>."},
-  // Q64 ans=C(2)
-  {q:"What is a Docker Image?",opts:["A running instance of a container","A screenshot of a Docker container","A read-only template with instructions for creating a Docker container","A Docker registry"],ans:2,exp:"A <b>Docker Image</b> is a <b>read-only template</b> with instructions for creating a Docker container — like a blueprint or snapshot."},
-  // Q65 ans=C(2)
-  {q:"What is a Docker Container?",opts:["A read-only template","A Docker registry","A runnable instance of an image","A Dockerfile instruction"],ans:2,exp:"A <b>Docker Container</b> is a <b>runnable instance of an image</b> — the live, running process created from a Docker image."},
-  // Q66 ans=C(2)
-  {q:"What happens to changes in a container when it is removed?",opts:["They are saved to the Docker registry","They are backed up automatically","Any changes to its state that aren't stored in persistent storage disappear","They are saved in the Dockerfile"],ans:2,exp:"When a container is removed, <b>any changes not stored in persistent storage disappear</b> — containers are ephemeral by default."},
-  // Q67 ans=C(2)
-  {q:"What is Docker Hub?",opts:["A private container registry for enterprise use only","A Docker command-line tool","A public registry that anyone can use, where Docker looks for images by default","A Docker monitoring tool"],ans:2,exp:"<b>Docker Hub</b> is a public registry that anyone can use — Docker looks for images there by default when you don't specify a custom registry."},
-  // Q68 ans=C(2)
-  {q:"What command is used to build a Docker image?",opts:["docker run","docker pull","docker build -t my-python-app .","docker push"],ans:2,exp:"<b>docker build -t my-python-app .</b> builds a Docker image from the Dockerfile in the current directory and tags it with the name 'my-python-app'."},
-  // Q69 ans=B(1)
-  {q:"What does the -t flag do in the docker build command?",opts:["Tells Docker to run in the background","Tags your image with a human-readable name","Specifies the terminal to use","Triggers automatic testing"],ans:1,exp:"The <b>-t flag tags your image</b> with a human-readable name — making it easy to reference the image by name instead of its ID."},
-  // Q70 ans=C(2)
-  {q:"What does the . (dot) mean in docker build -t my-python-app .?",opts:["Delete all containers","Run in detached mode","Tells Docker to use the current directory as the build context","Connect to Docker Hub"],ans:2,exp:"The <b>dot (.) tells Docker to use the current directory as the build context</b> — Docker looks for the Dockerfile and copies files from this location."},
-  // Q71 ans=C(2)
-  {q:"What is a Dockerfile?",opts:["A running Docker container","A Docker registry","A file with a simple syntax for defining the steps needed to create and run a Docker image","A Docker monitoring tool"],ans:2,exp:"A <b>Dockerfile</b> is a text file with a simple syntax defining the steps to create and run a Docker image — it's the recipe for your container."},
-  // Q72 ans=B(1)
-  {q:"What does each instruction in a Dockerfile create?",opts:["A new container","A layer in the image","A new registry","A new Docker daemon"],ans:1,exp:"Each instruction in a Dockerfile creates a <b>layer in the image</b> — Docker uses a layered filesystem for efficiency and caching."},
-  // Q73 ans=B(1)
-  {q:"Why are Docker images lightweight and fast compared to other virtualization technologies?",opts:["Because they run on physical hardware","Because when you change the Dockerfile and rebuild, only the changed layers are rebuilt","Because they use more memory","Because they don't need a Dockerfile"],ans:1,exp:"Docker images are efficient because <b>only changed layers are rebuilt</b> when you modify the Dockerfile — unchanged layers are cached and reused."},
-  // Q74 ans=C(2)
-  {q:"What is the purpose of the FROM instruction in a Dockerfile?",opts:["Copy files into the container","Define the command to run the application","Use an official base image (e.g., FROM python:3.9-slim)","Set the working directory"],ans:2,exp:"<b>FROM</b> specifies the base image to build from — e.g., <b>FROM python:3.9-slim</b> starts with an official Python image."},
-  // Q75 ans=B(1)
-  {q:"What is the purpose of the WORKDIR instruction in a Dockerfile?",opts:["Copy files into the container","Set the working directory in the container","Install dependencies","Define the base image"],ans:1,exp:"<b>WORKDIR</b> sets the working directory inside the container — all subsequent commands run from this directory."},
-  // Q76 ans=C(2)
-  {q:"What is the purpose of the COPY instruction in a Dockerfile?",opts:["Set the working directory","Define the base image","Copy the current directory contents into the container","Run a command inside the container"],ans:2,exp:"<b>COPY</b> copies files from the host machine (build context) into the container filesystem."},
-  // Q77 ans=D(3) — wait, answer key says Q77=D but let me recheck...
-  // From image: Q77=D(3) — "Execute a command during image build" would be RUN... 
-  // Key says Q77=D. Options: A=Run final app, B=Define base image, C=Set workdir, D=Execute command during build
-  {q:"What is the purpose of the RUN instruction in a Dockerfile?",opts:["Run the final application","Define the base image","Set the working directory","Execute a command during image build (e.g., install dependencies)"],ans:3,exp:"<b>RUN</b> executes a command during the image build process — commonly used to install dependencies (e.g., pip install -r requirements.txt)."},
-  // Q78 ans=B(1)
-  {q:"What is the purpose of the CMD instruction in a Dockerfile?",opts:["Copy files","Define the command to run when the container starts","Set environment variables","Pull from a registry"],ans:1,exp:"<b>CMD</b> defines the default command to run when the container starts — it specifies what the container executes at runtime."},
-  // Q79 ans=C(2)
-  {q:"What is the correct command to run a Docker container from the image my-python-app?",opts:["docker build my-python-app","docker pull my-python-app","docker run my-python-app","docker push my-python-app"],ans:2,exp:"<b>docker run my-python-app</b> creates and starts a container from the specified image."},
-  // Q80 ans=C(2)
-  {q:"After running docker run my-python-app with the sample Python app, what output should you see?",opts:["Docker is running!","Hello, World!","Hello, Docker!","Container started successfully!"],ans:2,exp:"The sample Python app in the lesson outputs <b>Hello, Docker!</b> when the container runs."},
-  // Q81 ans=B(1)
-  {q:"What is Docker Desktop?",opts:["A Docker command only available on Linux","An easy-to-install application for Mac, Windows, or Linux that enables building and sharing containerized applications and microservices","A Docker registry","A container monitoring tool"],ans:1,exp:"<b>Docker Desktop</b> is an easy-to-install application for Mac, Windows, or Linux that provides a GUI and all tools needed to build and share containerized applications."},
-  // Q82 ans=B(1)
-  {q:"Which of the following is included in Docker Desktop?",opts:["Only the Docker client","Docker daemon, Docker client, Docker Compose, Docker Content Trust, Kubernetes, and Credential Helper","Only Kubernetes","Only Docker Compose"],ans:1,exp:"Docker Desktop includes: <b>Docker daemon, Docker client, Docker Compose, Docker Content Trust, Kubernetes, and Credential Helper</b>."},
-  // Q83 ans=B(1)
-  {q:"What is Docker Compose?",opts:["A Docker image registry","A Docker client that lets you work with applications consisting of a set of containers","A monitoring tool for containers","A Dockerfile generator"],ans:1,exp:"<b>Docker Compose</b> is a tool for defining and running multi-container Docker applications using a YAML file."},
-  // Q84 ans=C(2)
-  {q:"What happens when you run docker run -i -t ubuntu /bin/bash and Docker doesn't have the Ubuntu image locally?",opts:["Docker creates a blank container","Docker throws an error","Docker pulls the Ubuntu image from the configured registry","Docker uses a cached version"],ans:2,exp:"If the image isn't available locally, <b>Docker automatically pulls it from the configured registry</b> (Docker Hub by default)."},
-  // Q85 ans=B(1)
-  {q:"In the docker run -i -t ubuntu /bin/bash example, what does the -i and -t flag combination do?",opts:["Runs the container in detached mode","Runs the container interactively and attaches it to your terminal so you can provide input","Tags the container with a name","Installs dependencies automatically"],ans:1,exp:"<b>-i -t</b> (interactive + TTY) runs the container interactively and attaches it to your terminal — allowing you to type commands inside the container."},
-  // Q86 ans=C(2)
-  {q:"What happens to a container when you type exit in an interactive session?",opts:["The container is permanently deleted","The container restarts automatically","The container stops but isn't removed — you can start it again or remove it","The container continues running in the background"],ans:2,exp:"Typing <b>exit</b> stops the container but does not remove it — you can restart it with <b>docker start</b> or remove it with <b>docker rm</b>."},
-  // Q87 ans=B(1)
-  {q:"What does Docker allocate to a new container as its final layer?",opts:["A read-only filesystem","A read-write filesystem, allowing the running container to create or modify files and directories","A network-only interface","A persistent storage volume automatically"],ans:1,exp:"Docker allocates a <b>read-write layer</b> as the final layer of every new container — this allows the running container to create or modify files."},
-  // Q88 ans=B(1)
-  {q:"How does Docker handle networking for a new container by default?",opts:["No network is created","It creates a network interface, assigns an IP address, and allows the container to connect to external networks via the host machine's network","The container uses a VPN by default","The container is completely isolated from all networks"],ans:1,exp:"By default, Docker <b>creates a network interface, assigns an IP address</b>, and connects the container to external networks through the host's network connection."},
-  // Q89 ans=B(1)
-  {q:"What is Docker used for in terms of hardware efficiency?",opts:["It requires more hardware than virtual machines","It is lightweight and fast, providing a cost-effective alternative to hypervisor-based virtual machines, allowing more workloads on the same hardware","It only works on high-end servers","It is designed only for large enterprise deployments"],ans:1,exp:"Docker is <b>lightweight and fast</b>, providing a cost-effective alternative to VMs — more containers can run on the same hardware than VMs."},
-  // Q90 ans=C(2)
-  {q:"Which of the following best describes the complete flow from Dockerfile to running container?",opts:["Docker Container → Docker Image → Dockerfile","Docker Image → Dockerfile → Docker Container","Dockerfile → (Build) → Docker Image → (Run) → Docker Container","Docker Container → (Build) → Dockerfile → (Run) → Docker Image"],ans:2,exp:"The correct flow is: <b>Dockerfile → (docker build) → Docker Image → (docker run) → Docker Container</b>."},
-  // Q91 ans=C(2)
-  {q:"Which DevOps collaboration tool category includes Snyk, SonarQube, OWASP ZAP, and Trivy?",opts:["CI/CD Collaboration Tools","Infrastructure Collaboration","Security Collaboration (DevSecOps)","Monitoring & Feedback Tools"],ans:2,exp:"Snyk, SonarQube, OWASP ZAP, and Trivy are all <b>Security Collaboration (DevSecOps)</b> tools — used for vulnerability scanning, code quality, and security testing."},
-  // Q92 ans=D(3)
-  {q:"Which tool is used for 'Dependency scanning' in DevSecOps?",opts:["SonarQube","OWASP ZAP","Trivy","Snyk"],ans:3,exp:"<b>Snyk</b> is used for dependency scanning — it finds and fixes vulnerabilities in open-source libraries and dependencies."},
-  // Q93 ans=B(1)
-  {q:"What is the purpose of Prometheus in the DevOps Monitor stage?",opts:["Artifact repository","Metrics collection","Task boards","Source code versioning"],ans:1,exp:"<b>Prometheus</b> is used for <b>metrics collection</b> — it scrapes and stores time-series metrics from applications and infrastructure."},
-  // Q94 ans=C(2)
-  {q:"What is the purpose of Grafana?",opts:["Sprint planning","Container scanning","Dashboards for monitoring","Build pipelines"],ans:2,exp:"<b>Grafana</b> provides <b>dashboards for monitoring</b> — it visualizes metrics collected by Prometheus and other data sources in beautiful, interactive dashboards."},
-  // Q95 ans=B(1)
-  {q:"What is PagerDuty used for in DevOps?",opts:["Code quality checks","On-call alerts and incident management","Artifact management","Container orchestration"],ans:1,exp:"<b>PagerDuty</b> is used for <b>on-call alerts and incident management</b> — it notifies the right people when monitoring detects issues."},
-  // Q96 ans=D(3)
-  {q:"In the DevOps Map Cycle Tools Summary, which tools are used for the FEEDBACK stage?",opts:["Docker, Helm","Kubernetes, ArgoCD","Prometheus, Grafana","Slack, PagerDuty"],ans:3,exp:"The <b>FEEDBACK stage</b> uses communication and alerting tools: <b>Slack, PagerDuty</b> — for notifications and incident response."},
-  // Q97 ans=B(1)
-  {q:"What does the term 'shift-left' mean in DevOps culture?",opts:["Moving operations to the left side of the office","Integrating security early in the development process rather than as a final gate","Moving deployment to an earlier stage","Shifting responsibilities to the left team"],ans:1,exp:"<b>Shift-left</b> means integrating security (and testing) <b>early in the development process</b> — catching issues when they're cheapest to fix, not as a final gate."},
-  // Q98 ans=B(1)
-  {q:"What is the CI/CD Pipeline defined as?",opts:["A waterfall project management approach","An agile DevOps workflow focused on a frequent and reliable software delivery process that is iterative rather than linear","A manual testing framework","A security scanning tool"],ans:1,exp:"The CI/CD Pipeline is an <b>agile DevOps workflow</b> focused on frequent and reliable software delivery — iterative rather than linear."},
-  // Q99 ans=B(1)
-  {q:"In the midterm activity, which tools and technologies are required?",opts:["Java, Maven, Jenkins, JUnit","Python 3, OpenCV, GitHub & GitHub Actions, PyTest","Docker, Kubernetes, Terraform, Ansible","Jira, Trello, Slack, Confluence"],ans:1,exp:"The midterm activity requires: <b>Python 3, OpenCV, GitHub & GitHub Actions, PyTest</b>."},
-  // Q100 ans=B(1)
-  {q:"Which of the following best summarizes the overall goal of DevOps?",opts:["To replace all human workers with automation","To combine software development and IT operations to deliver applications faster, more reliably, and with better quality through collaboration, automation, and continuous feedback","To eliminate the need for testing","To make developers responsible for all operations tasks"],ans:1,exp:"The overall goal of DevOps is to <b>combine Dev and Ops to deliver applications faster, more reliably, and with better quality</b> through collaboration, automation, and continuous feedback."},
+// PART 2 — DevOps Practices & Benefits
+{q:"It is the practice of managing and provisioning IT infrastructure using code and configuration files instead of manual processes.",opts:["Continuous Delivery","Containerization","Continuous Feedback","Infrastructure as Code (IaC)"],ans:3,exp:"<b>IaC</b> = your servers defined in code — version controlled, repeatable, automated. Tools: Terraform, Ansible."},
+{q:"Releasing new features and updates rapidly and frequently is an example of this key DevOps benefit.",opts:["Increased Manual Effort","More Isolated Teams","Slower Release Cycles","Faster Releases"],ans:3,exp:"<b>Faster Releases</b> is a core DevOps benefit — automation enables rapid, reliable delivery."},
+{q:"In DevOps, monitoring and feedback loops that quickly identify and fix issues throughout the SDLC are called:",opts:["Weekly Team Meetings","Annual Customer Surveys","Sprint Retrospectives","Continuous Feedback"],ans:3,exp:"<b>Continuous Feedback</b> = always-on visibility into what is working and what needs to be fixed."},
+{q:"This is NOT a key benefit of DevOps — in fact, DevOps does the opposite of this.",opts:["Faster Releases","Improved Reliability","Better Responsiveness","Increased Manual Effort"],ans:3,exp:"DevOps <b>reduces</b> manual effort through automation. 'Increased Manual Effort' is the opposite of DevOps."},
+{q:"Moving from siloed, slow processes to a shared mindset focused on speed, quality, and shared ownership is the DevOps:",opts:["Pipeline Upgrade","Toolchain Migration","Agile Transformation","Culture Shift"],ans:3,exp:"The <b>Culture Shift</b> is often the hardest part of DevOps — changing how people think and work together."},
+{q:"In Traditional Development, siloed teams result in this outcome — especially during deployments.",opts:["Faster Releases and Fewer Bugs","Better Collaboration and Shared Goals","Frequent Small Releases","Blame Culture, Slow Fixes, and Stress"],ans:3,exp:"Siloed teams = <b>blame culture, slow fixes, and deployment stress</b>. Everyone protects their territory."},
+{q:"It describes the Traditional Development model: each phase is handed off to the next team in a linear sequence.",opts:["Integrated Continuous Flow with Cross-Functional Teams","Automated Deployments and Frequent Releases","Shared Responsibility Across All Teams","Linear, Sequential Phases with Distinct Teams"],ans:3,exp:"Traditional Development is <b>linear and sequential</b> — like a waterfall, each team waits for the previous."},
+{q:"Compared to Traditional Development, DevOps releases are described as:",opts:["Infrequent and Large","Only Done Once a Year","Handled Only by Operations","Frequent, Small, and Agile — Easier to Manage and Test"],ans:3,exp:"DevOps releases are <b>frequent and small</b> — lower risk, faster feedback, easier rollback."},
+{q:"In DevOps, code quality, deployment success, and system reliability are owned by:",opts:["Only the QA Team","Only the Developers","Only the Operations Team","Everyone — Shared Responsibility Across All Teams"],ans:3,exp:"<b>Shared responsibility</b> is a core DevOps value — no single team owns success or failure."},
+{q:"A post-incident review that focuses on what failed and how to improve — not on who is to blame — is called a:",opts:["Security Audit","Performance Evaluation","Sprint Retrospective","Blameless Postmortem"],ans:3,exp:"<b>Blameless Postmortem</b> creates psychological safety to admit mistakes and learn openly."},
+
+// PART 3 — DevOps Map Cycle & Tools
+{q:"It is the correct order of the DevOps Map Cycle.",opts:["Code → Plan → Build → Test → Deploy → Release → Operate → Monitor → Feedback","Build → Plan → Code → Test → Monitor → Deploy → Release → Operate → Feedback","Plan → Build → Code → Deploy → Test → Release → Monitor → Operate → Feedback","Plan → Code → Build → Test → Release → Deploy → Operate → Monitor → Feedback"],ans:3,exp:"Memorize: <b>Plan → Code → Build → Test → Release → Deploy → Operate → Monitor → Feedback</b>."},
+{q:"It is an example tool for Issue Tracking and Project Management in the DevOps Plan stage.",opts:["Jenkins","GitHub Actions","Ansible","Trello"],ans:3,exp:"<b>Trello</b> is a project management tool used in the <b>Plan</b> stage alongside Jira, GitHub Issues, and ClickUp."},
+{q:"It is an example tool for Version Control and Code Collaboration in the DevOps Code stage.",opts:["Trello","Jenkins","MS Teams","GitHub"],ans:3,exp:"<b>GitHub</b> is used in the <b>Code</b> stage for version control and code collaboration."},
+{q:"It is an example tool for Build Automation and Continuous Integration in the DevOps Build stage.",opts:["Jira","Prometheus","Docker","Jenkins"],ans:3,exp:"<b>Jenkins</b> is a CI tool used in the <b>Build</b> stage to compile code and trigger automated pipelines."},
+{q:"It is an example tool for Testing in the DevOps Test stage.",opts:["Kubernetes","ClickUp","Terraform","Selenium"],ans:3,exp:"<b>Selenium</b> is a UI testing tool used in the <b>Test</b> stage for automated browser testing."},
+{q:"It is an example tool for Artifact Management and Packaging in the DevOps Release stage.",opts:["Git","Prometheus","Jira","Docker"],ans:3,exp:"<b>Docker</b> is used in the <b>Release</b> stage to package applications as container images for release."},
+{q:"It is an example tool for Container Orchestration and Deployment in the DevOps Deploy stage.",opts:["Jenkins","Slack","SonarQube","Kubernetes"],ans:3,exp:"<b>Kubernetes</b> is used in the <b>Deploy</b> stage to orchestrate and manage containerized application deployments."},
+{q:"It is an example tool for Infrastructure Automation (IaC) in the DevOps Operate stage.",opts:["PyTest","Trello","Nexus","Terraform"],ans:3,exp:"<b>Terraform</b> is an IaC tool used in the <b>Operate</b> stage to provision and manage infrastructure as code."},
+{q:"It is an example tool for Metrics Collection in the DevOps Monitor stage.",opts:["GitHub","Jenkins","ArgoCD","Prometheus"],ans:3,exp:"<b>Prometheus</b> collects and stores time-series metrics from applications and infrastructure."},
+{q:"It is an example tool in the TEST stage specifically used for Code Quality analysis.",opts:["Selenium","PyTest","OWASP ZAP","SonarQube"],ans:3,exp:"<b>SonarQube</b> analyzes code for bugs, code smells, and technical debt — not UI or security testing."},
+
+// PART 4 — DevOps Pipeline & CI/CD
+{q:"It is the automated workflow that builds, tests, and deploys software through CI and CD.",opts:["A Physical Server Cable","A Project Management Tool","A Type of Docker Container","A DevOps Pipeline"],ans:3,exp:"The <b>DevOps Pipeline</b> automates everything from code commit to production deployment."},
+{q:"CI stands for this in DevOps — the practice of merging code into a shared repository multiple times a day.",opts:["Container Integration","Continuous Improvement","Code Implementation","Continuous Integration"],ans:3,exp:"<b>CI = Continuous Integration</b> — automatically build and test every code push."},
+{q:"CD stands for this in DevOps — it comes in two flavors: one requiring human approval, one fully automatic.",opts:["Container Delivery","Code Development","Centralized Distribution","Continuous Deployment or Continuous Delivery"],ans:3,exp:"<b>CD = Continuous Deployment or Continuous Delivery</b> — two related but distinct practices."},
+{q:"In the CI/CD pipeline, after a developer commits a change, the correct next sequence is:",opts:["Build → Commit → Test → Deploy → Notify","Deploy → Test → Build → Commit → Notify","Test → Build → Commit → Deploy → Monitor","Commit → Trigger Build → Build → Notify → Run Tests → Notify → Deliver to Staging → Deploy to Production"],ans:3,exp:"Full CI/CD sequence: <b>Commit → Trigger → Build → Notify → Test → Notify → Staging → Production</b>."},
+{q:"In the CI/CD table, the PURPOSE of CI is to do this to the code.",opts:["Release It","Deploy It to Production","Monitor Its Performance","Check It"],ans:3,exp:"CI's purpose = <b>check the code</b> — verify it builds correctly and all tests pass."},
+{q:"In the CI/CD table, the OUTPUT of CD is this.",opts:["Tested App","Source Code","Docker Image","Running App"],ans:3,exp:"CD's output = a <b>running app</b> — live in production or staging."},
+{q:"CI is triggered at this point in the development workflow.",opts:["After CD Passes","After Deployment","After Monitoring","After a Push to the Repository"],ans:3,exp:"CI runs <b>after every push</b> — automatically triggered when code is committed to the repo."},
+{q:"The result question that CI answers is:",opts:["Available?","Deployed?","Secure?","Works?"],ans:3,exp:"CI answers: <b>'Does it work?'</b> — does the code build and do all tests pass?"},
+{q:"A team merges code into a shared central repository multiple times a day, and every merge automatically triggers build and test processes. This practice is called:",opts:["Manual Deployment","Continuous Testing","Continuous Delivery","Continuous Integration"],ans:3,exp:"<b>Continuous Integration (CI)</b> = frequent merges + automatic build and test on every push."},
+{q:"In Step 2 of the Continuous Deployment process, the CI stage runs. What happens here?",opts:["Developer Pushes Code","Package the App and Send to Server","Users Access the Website","Build the App, Run Tests, and Check for Errors"],ans:3,exp:"CI step = <b>build the app, run tests, check for errors</b>. Step 1 = push. Step 3 = CD deploys."},
+
+// PART 5 — Continuous Deployment Details
+{q:"In Step 3 of the Continuous Deployment process, the CD stage runs. What happens here?",opts:["Developer Pushes Code","CI Builds and Tests the App","Users Access the Website","Package the App (Docker), Send to a Server/Cloud, Start the Application"],ans:3,exp:"CD step = <b>package → ship → start</b>. The app is now live!"},
+{q:"Software is always in a releasable state, but a human must approve before it is deployed to production. This is called:",opts:["Continuous Deployment","Manual Testing","Container Registry","Continuous Delivery"],ans:3,exp:"<b>Continuous Delivery</b> = always release-ready, but a human clicks the final deploy button."},
+{q:"The key difference between Continuous Delivery and Continuous Deployment is:",opts:["Delivery Uses Docker; Deployment Uses Kubernetes","Delivery Is Always Faster","There Is No Difference","Delivery Requires Human Approval; Deployment Deploys Automatically Without Human Intervention"],ans:3,exp:"<b>Delivery = human approval. Deployment = fully automatic.</b> This is the critical distinction."},
+{q:"It is a CD requirement — a comprehensive suite of unit, integration, and end-to-end tests that must be in place before automating deployments.",opts:["Manual Testing Only","Separate Dev and Ops Teams","Infrequent Releases","Robust Automated Testing"],ans:3,exp:"<b>Robust Automated Testing</b> is the safety net for CD — without it, you cannot safely auto-deploy."},
+{q:"It is also a CD requirement — the entire team shares responsibility for code quality and the release process.",opts:["No Monitoring Needed","Manual Deployment Processes","Only Developers Are Responsible","Culture of Accountability"],ans:3,exp:"<b>Culture of Accountability</b> = everyone owns the pipeline and the product. No 'not my job.'"},
+{q:"Every change that passes automated testing is deployed to production automatically, with zero manual steps. This key aspect is called:",opts:["Large Infrequent Updates","Manual Approval for Every Change","Separate Deployment Teams","Full Automation"],ans:3,exp:"<b>Full Automation</b> = if tests pass, it ships. No human gates in Continuous Deployment."},
+{q:"Smaller, more frequent changes that are easier to test, debug, and roll back if necessary — this is a benefit of Continuous Deployment called:",opts:["Slower Release Cycles","More Manual Work","Less Customer Feedback","Reduced Risk"],ans:3,exp:"<b>Reduced Risk</b> = small changes have a smaller blast radius. Easier to find and fix problems."},
+{q:"Because changes go live instantly, developers receive real-world performance data and bug reports right away. This is called:",opts:["Customer Surveys","Weekly Standups","Monthly Reviews","Immediate Feedback"],ans:3,exp:"<b>Immediate Feedback</b> = production is the fastest feedback loop. Real users, real data, right now."},
+
+// PART 6 — Monitoring, Containers & Kubernetes
+{q:"It is the continuous tracking and analysis of applications, infrastructure, and the entire SDLC to provide real-time insights.",opts:["A One-Time Audit","A Weekly Performance Report","Monitoring Only Server CPU","DevOps Monitoring"],ans:3,exp:"<b>DevOps Monitoring</b> = always-on visibility into everything running in your system."},
+{q:"This is NOT one of the 5 Key Components of DevOps Monitoring.",opts:["Application Monitoring","Infrastructure Monitoring","Security Monitoring","Financial Monitoring"],ans:3,exp:"The 5 key components are: Application, Infrastructure, Security, Business Metrics, and User Experience. <b>Financial Monitoring</b> is not one of them."},
+{q:"They are lightweight, portable executable packages that bundle code, libraries, and dependencies — ensuring the app runs the same way everywhere.",opts:["Virtual Machines","Physical Servers","Database Systems","Containers"],ans:3,exp:"<b>Containers</b> solve the 'works on my machine' problem — consistent environment in every place."},
+{q:"It is an open-source platform that automates deploying, scaling, and managing containerized applications.",opts:["A Programming Language for Containers","A Docker Image Registry","A CI/CD Pipeline Tool","Kubernetes (K8s)"],ans:3,exp:"<b>Kubernetes</b> is the orchestrator — it manages your containers at scale."},
+{q:"Containers provide the portable unit of software. _______ manages those containers at scale.",opts:["Terraform","Jenkins","Docker Hub","Kubernetes"],ans:3,exp:"<b>Kubernetes</b> manages containers at scale. Containers are the boxes; Kubernetes is the warehouse manager."},
+{q:"It automates deployment, scaling up or down, self-healing, load balancing, and rolling updates for containerized applications.",opts:["Writing Application Code","Creating Dockerfiles","Planning Sprints","Kubernetes"],ans:3,exp:"<b>Kubernetes</b> handles the hard operational work — auto-scaling, self-healing, load balancing, and more."},
+{q:"It is used for managing and provisioning IT infrastructure using code and configuration files instead of doing it manually.",opts:["Writing Front-End Code","Creating Docker Images","Monitoring App Performance","Infrastructure as Code (IaC)"],ans:3,exp:"<b>IaC</b> = version-controlled, repeatable, automated infrastructure. Tools: Terraform, Ansible."},
+
+// PART 7 — Collaboration in DevOps
+{q:"It means developers, operations, QA, security, and even stakeholders work as ONE team across the entire software lifecycle.",opts:["Communication","Deployment","Release","Collaboration"],ans:3,exp:"<b>Collaboration</b> in DevOps tears down department walls — everyone works together end to end."},
+{q:"In DevOps roles, they write deployable and testable code and also help debug production issues.",opts:["Operations","Quality Assurance","Stakeholders","Developers"],ans:3,exp:"<b>Developers</b> in DevOps own the code all the way to production — not just until it compiles."},
+{q:"In DevOps, if everyone can see the same thing — the source code, pipelines, logs and metrics — this practice is called:",opts:["Shared Responsibility","Automation as a Collaboration Tool","Continuous Feedback Loop","Shared Tools and Visibility"],ans:3,exp:"<b>Shared Tools and Visibility</b> = transparency. No hidden dashboards, no secret logs."},
+{q:"It is an example tool for Feedback and alerting in the DevOps Feedback stage.",opts:["Nexus","Terraform","ArgoCD","Slack"],ans:3,exp:"<b>Slack</b> is used in the Feedback stage — CI/CD pipeline notifications and incident alerts flow through it."},
+{q:"Dev: 'My code works.' Ops: 'Your deployment broke everything.' This outcome is the result of which type of collaboration?",opts:["Faster Releases and Fewer Failures","Shared Goals and Shared Responsibility","Automated Pipelines and Continuous Feedback","Traditional Siloed Collaboration"],ans:3,exp:"<b>Traditional Siloed Collaboration</b> = blame culture, slow fixes, and stress every single deployment."},
+
+// PART 8 — Docker Fundamentals
+{q:"Docker uses this type of architecture where the client sends commands to a background process that executes them.",opts:["Peer-to-Peer","Monolithic","Microkernel","Client-Server"],ans:3,exp:"<b>Client-Server Architecture</b>: Docker client → Docker daemon. The daemon does all the real work."},
+{q:"It is the background process that listens for Docker API requests and manages images, containers, networks, and volumes.",opts:["A Command-Line Tool","A Registry that Stores Images","A Container Running in the Background","The Docker Daemon (dockerd)"],ans:3,exp:"The <b>Docker daemon (dockerd)</b> is the engine behind Docker — it handles everything."},
+{q:"The Docker client and daemon communicate through this.",opts:["FTP","SSH Only","Bluetooth","REST API over UNIX Sockets or a Network Interface"],ans:3,exp:"Docker uses a <b>REST API over UNIX sockets or a network interface</b> for client-daemon communication."},
+{q:"It is a read-only template with instructions for creating a Docker container — like a blueprint.",opts:["A Running Container Instance","A Screenshot of a Container","A Docker Registry","A Docker Image"],ans:3,exp:"A <b>Docker Image</b> = blueprint. A <b>Container</b> = the live process built from that blueprint."},
+{q:"It is a runnable instance of a Docker image — the live, running process.",opts:["A Read-Only Template","A Docker Registry","A Dockerfile Instruction","A Docker Container"],ans:3,exp:"A <b>Docker Container</b> = a running instance of an image. Start one with <b>docker run</b>."},
+{q:"When a Docker container is removed, what happens to changes that were NOT stored in persistent storage?",opts:["Saved to Docker Hub","Backed Up Automatically","Saved in the Dockerfile","They Disappear — Containers Are Ephemeral"],ans:3,exp:"Containers are <b>ephemeral</b> — use Docker volumes for data you want to keep after the container stops."},
+{q:"It is the public registry that anyone can use, and Docker looks here for images by default.",opts:["A Private Enterprise Registry","A Docker Command-Line Tool","A Docker Monitoring Tool","Docker Hub"],ans:3,exp:"<b>Docker Hub</b> is Docker's default public registry — the 'App Store' for container images."},
+{q:"It is the command used to build a Docker image and tag it with a human-readable name.",opts:["docker run","docker pull","docker push","docker build -t my-python-app ."],ans:3,exp:"<b>docker build -t my-python-app .</b> — builds from Dockerfile, tags it with a name, uses the current directory."},
+{q:"In the command docker build -t my-python-app ., the -t flag does this.",opts:["Runs Docker in the Background","Specifies the Terminal","Triggers Automatic Testing","Tags the Image with a Human-Readable Name"],ans:3,exp:"<b>-t tags the image</b> with a name so you don't have to use its long hash ID."},
+{q:"In the command docker build -t my-python-app ., the dot (.) at the end tells Docker to:",opts:["Delete All Containers","Run in Detached Mode","Connect to Docker Hub","Use the Current Directory as the Build Context"],ans:3,exp:"The <b>dot (.)</b> = build context. Docker looks here for the Dockerfile and files to copy into the image."},
+
+// PART 9 — Dockerfile & Docker Objects
+{q:"It is a text file that defines the steps needed to create and run a Docker image — the recipe for your container.",opts:["A Running Docker Container","A Docker Registry","A Docker Monitoring Tool","A Dockerfile"],ans:3,exp:"A <b>Dockerfile</b> = the recipe. Every instruction in it adds a layer to the final image."},
+{q:"Each instruction in a Dockerfile creates this, which is why Docker images are efficient and fast to rebuild.",opts:["A New Container","A New Registry","A New Docker Daemon","A Layer in the Image"],ans:3,exp:"<b>Layers</b> = Docker's efficiency. Only changed layers are rebuilt when you modify the Dockerfile."},
+{q:"When you change one line in a Dockerfile and rebuild, Docker only rebuilds the changed layers. This makes Docker:",opts:["Slower and Heavier","Harder to Use","Requiring More Memory","Lightweight and Fast Compared to Other Virtualization Technologies"],ans:3,exp:"<b>Layer caching</b> = faster builds. Put rarely changing instructions near the top of your Dockerfile!"},
+{q:"It is the Dockerfile instruction that specifies the base image to start from — for example, python:3.9-slim.",opts:["COPY","WORKDIR","CMD","FROM"],ans:3,exp:"<b>FROM</b> = the foundation of every Dockerfile. It sets the base image everything else builds on top of."},
+{q:"It is the Dockerfile instruction that sets the working directory inside the container for all subsequent commands.",opts:["COPY","RUN","FROM","WORKDIR"],ans:3,exp:"<b>WORKDIR</b> sets the directory inside the container. Like typing 'cd /app' at the start."},
+{q:"It is the Dockerfile instruction that copies files from the host machine into the container filesystem.",opts:["WORKDIR","FROM","RUN","COPY"],ans:3,exp:"<b>COPY</b> gets your app code and files from your local machine into the container image."},
+{q:"It is the Dockerfile instruction that executes a command during the image BUILD process — for example, pip install.",opts:["CMD","FROM","WORKDIR","RUN"],ans:3,exp:"<b>RUN</b> = build-time command. Use it for <b>pip install</b>, <b>apt-get</b>, and other setup tasks."},
+{q:"It is the Dockerfile instruction that defines the default command to run when the container STARTS.",opts:["COPY","FROM","RUN","CMD"],ans:3,exp:"<b>CMD</b> = runtime command. It tells Docker what to execute when the container is launched."},
+{q:"It is the correct command to start a running container from the image named my-python-app.",opts:["docker build my-python-app","docker pull my-python-app","docker push my-python-app","docker run my-python-app"],ans:3,exp:"<b>docker run my-python-app</b> = create + start a container from the specified image."},
+{q:"After running the sample Python app with docker run, what output should appear in the terminal?",opts:["Docker is running!","Hello, World!","Container started successfully!","Hello, Docker!"],ans:3,exp:"The sample Python app in the lesson outputs <b>Hello, Docker!</b> when the container runs."},
+
+// PART 10 — Docker Architecture & Use Cases
+{q:"It is an easy-to-install application for Mac, Windows, or Linux that includes the Docker daemon, client, Compose, Kubernetes, and more.",opts:["A Docker Command Only for Linux","A Docker Registry","A Container Monitoring Tool","Docker Desktop"],ans:3,exp:"<b>Docker Desktop</b> = one installer that gives you everything for local container development."},
+{q:"Docker Desktop includes all of the following EXCEPT:",opts:["Docker Daemon","Docker Client","Docker Compose","A Built-In Code Editor"],ans:3,exp:"Docker Desktop includes daemon, client, Compose, Content Trust, K8s, and Credential Helper — but <b>not a code editor</b>."},
+{q:"It is a Docker tool that lets you define and run applications made up of multiple containers using a single YAML file.",opts:["A Docker Image Registry","A Container Monitoring Tool","A Dockerfile Generator","Docker Compose"],ans:3,exp:"<b>Docker Compose</b> = multi-container apps made simple. One <b>docker-compose.yml</b> defines all services."},
+{q:"When you run docker run -i -t ubuntu /bin/bash and the Ubuntu image is not available locally, Docker will:",opts:["Create a Blank Container","Throw an Error","Use a Cached Version","Automatically Pull the Ubuntu Image from the Registry"],ans:3,exp:"Docker <b>auto-pulls missing images</b> — no manual download needed. It fetches from Docker Hub by default."},
+{q:"In the command docker run -i -t ubuntu /bin/bash, the -i and -t flags together do this.",opts:["Run the Container in Detached Mode","Tag the Container with a Name","Install Dependencies Automatically","Run the Container Interactively and Attach It to Your Terminal"],ans:3,exp:"<b>-i</b> = interactive (keep STDIN open). <b>-t</b> = pseudo-TTY. Together = interactive shell inside the container."},
+{q:"When you type 'exit' inside a Docker interactive session, what happens to the container?",opts:["Permanently Deleted","Restarts Automatically","Continues Running in the Background","Stops but Is Not Removed — Can Be Restarted or Deleted Later"],ans:3,exp:"<b>exit</b> = stops the container, not deletes it. Use <b>docker rm</b> to permanently remove it."},
+{q:"Docker allocates this as the final layer of every new container, allowing it to create or modify files during runtime.",opts:["A Read-Only Filesystem","A Network-Only Interface","An Automatic Persistent Storage Volume","A Read-Write Filesystem"],ans:3,exp:"The <b>read-write layer</b> is what makes each container instance unique and able to write data at runtime."},
+{q:"By default, when Docker starts a new container, it handles networking by doing this.",opts:["No Network Is Created","The Container Uses a VPN","The Container Is Completely Isolated","Creating a Network Interface, Assigning an IP, and Connecting via the Host Network"],ans:3,exp:"Docker <b>automatically sets up networking</b> — each container gets an IP and can reach the internet through the host."},
+{q:"It is the hardware efficiency advantage of Docker — running more workloads on the same hardware compared to traditional VMs.",opts:["Requires More Hardware than VMs","Only Works on High-End Servers","Designed Only for Large Enterprises","Lightweight and Fast — a Cost-Effective Alternative to Hypervisor-Based VMs"],ans:3,exp:"Containers share the host OS kernel — far <b>lighter and faster than full VMs</b>, more density on same hardware."},
+{q:"Which correctly describes the complete flow from writing instructions to a running container?",opts:["Container → Image → Dockerfile","Image → Dockerfile → Container","Container → (Build) → Dockerfile → (Run) → Image","Dockerfile → (Build) → Docker Image → (Run) → Docker Container"],ans:3,exp:"The correct flow: <b>Dockerfile → docker build → Docker Image → docker run → Docker Container</b>."},
+
+// PART 11 — Mixed / Advanced Topics
+{q:"Snyk, SonarQube, OWASP ZAP, and Trivy belong to which DevOps collaboration tool category?",opts:["CI/CD Collaboration Tools","Infrastructure Collaboration","Monitoring and Feedback Tools","Security Collaboration (DevSecOps)"],ans:3,exp:"These are all <b>DevSecOps</b> tools — security integrated into every stage of the pipeline."},
+{q:"It is the DevSecOps tool used specifically for dependency scanning — finding vulnerabilities in open-source libraries.",opts:["SonarQube","OWASP ZAP","Trivy","Snyk"],ans:3,exp:"<b>Snyk</b> scans your open-source dependencies for known security vulnerabilities."},
+{q:"It is the purpose of Prometheus in the DevOps Monitor stage.",opts:["Artifact Repository Management","Sprint Planning and Backlog","Source Code Versioning","Metrics Collection"],ans:3,exp:"<b>Prometheus</b> scrapes and stores time-series metrics from applications and infrastructure."},
+{q:"It is the purpose of Grafana in the DevOps Monitor stage.",opts:["Running Build Pipelines","Container Vulnerability Scanning","Sprint Planning","Dashboards for Monitoring"],ans:3,exp:"<b>Grafana</b> takes Prometheus data and builds beautiful, interactive monitoring dashboards."},
+{q:"In DevOps, it is the tool used for on-call alerts and incident management — notifying the right person when something breaks in production.",opts:["SonarQube","Artifact Management Tool","Container Orchestration Tool","PagerDuty"],ans:3,exp:"<b>PagerDuty</b> = the on-call alert system that ensures the right engineer is notified when production breaks."},
+{q:"Slack and PagerDuty are example tools used in this stage of the DevOps Map Cycle.",opts:["Deploy","Build","Monitor","Feedback"],ans:3,exp:"<b>Feedback</b> stage = communication and alerting tools that notify teams of incidents and pipeline results."},
+{q:"The practice of integrating security early in the development process — rather than treating it as a final gate at the end — is called:",opts:["Moving Operations to the Left","Moving Deployment Earlier","Shifting Responsibilities","Shift-Left"],ans:3,exp:"<b>Shift-Left</b> = find and fix security issues earlier in the process, when they are cheapest to fix."},
+{q:"It is defined as an agile DevOps workflow for frequent and reliable software delivery that is iterative rather than linear.",opts:["A Waterfall Project Management Approach","A Manual Testing Framework","A Security Scanning Tool","The CI/CD Pipeline"],ans:3,exp:"The <b>CI/CD Pipeline</b> = iterative, automated, agile delivery — not a one-time linear waterfall."},
+{q:"For the midterm activity, these are the required tools and technologies.",opts:["Java, Maven, Jenkins, JUnit","Docker, Kubernetes, Terraform, Ansible","Jira, Trello, Slack, Confluence","Python 3, OpenCV, GitHub and GitHub Actions, PyTest"],ans:3,exp:"The midterm activity requires: <b>Python 3, OpenCV, GitHub & GitHub Actions, PyTest</b>."},
+{q:"It combines software development and IT operations to deliver applications faster, more reliably, and with better quality through collaboration, automation, and continuous feedback.",opts:["Replacing All Workers with Automation","Eliminating the Need for Testing","Making Developers Do All Operations Work","DevOps"],ans:3,exp:"The overall goal of <b>DevOps</b>: faster + more reliable + better quality — through collaboration, automation, and continuous feedback."},
 ];
 
-// ══ STATE ══
-let playerName='', mcqDeck=[];
-let mcqIdx=0, mcqCorrect=0, mcqWrong=[], answered=false;
+// ── ENGINE ──
+let playerName='',mcqDeck=[],mcqIdx=0,mcqCorrect=0,mcqWrong=[],answered=false;
 const TOTAL=100;
 
-function shuffle(a){
-  const b=[...a];
-  for(let i=b.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [b[i],b[j]]=[b[j],b[i]];
-  }
-  return b;
-}
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 
 function shuffleQuestion(q){
-  const indices=[0,1,2,3];
-  for(let i=3;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [indices[i],indices[j]]=[indices[j],indices[i]];
-  }
-  const newOpts=indices.map(i=>q.opts[i]);
-  const newAns=indices.indexOf(q.ans);
-  return {...q, opts:newOpts, ans:newAns};
+  const idx=[0,1,2,3];
+  for(let i=3;i>0;i--){const j=Math.floor(Math.random()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]];}
+  return{...q,opts:idx.map(i=>q.opts[i]),ans:idx.indexOf(q.ans)};
 }
 
-function showS(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
+function showS(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function goLB(){showS('s-lb');loadLB();}
 function loadLB(){if(window._fbLoad)window._fbLoad();else document.getElementById('lb-body').innerHTML='<p class="lb-empty">Firebase not loaded.</p>';}
 
@@ -469,10 +340,9 @@ function startGame(){
   if(!n){document.getElementById('pname').focus();return;}
   playerName=n;
   mcqDeck=shuffle(ALL_MCQ).map(q=>shuffleQuestion(q));
-  mcqIdx=0; mcqCorrect=0; mcqWrong=[]; answered=false;
+  mcqIdx=0;mcqCorrect=0;mcqWrong=[];answered=false;
   document.getElementById('mcq-chip').textContent='✦ '+playerName;
-  showS('s-mcq');
-  renderQ();
+  showS('s-mcq');renderQ();
 }
 
 function renderQ(){
@@ -486,8 +356,7 @@ function renderQ(){
   document.getElementById('mcq-sc').textContent=mcqCorrect;
   answered=false;
   document.getElementById('btn-next').className='btn-next';
-  const keys=['A','B','C','D'];
-  const c=document.getElementById('opts');
+  const keys=['A','B','C','D'],c=document.getElementById('opts');
   c.innerHTML='';
   d.opts.forEach((o,i)=>{
     const b=document.createElement('button');
@@ -499,28 +368,18 @@ function renderQ(){
 }
 
 function pick(idx,btn){
-  if(answered)return;
-  answered=true;
+  if(answered)return;answered=true;
   const d=mcqDeck[mcqIdx];
   document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
   if(idx===d.ans){btn.classList.add('correct');mcqCorrect++;}
-  else{
-    btn.classList.add('wrong');
-    document.querySelectorAll('.opt')[d.ans].classList.add('correct');
-    mcqWrong.push({num:mcqIdx+1,q:d.q});
-  }
+  else{btn.classList.add('wrong');document.querySelectorAll('.opt')[d.ans].classList.add('correct');mcqWrong.push({num:mcqIdx+1,q:d.q});}
   document.getElementById('qexp').classList.add('show');
   document.getElementById('mcq-sc').textContent=mcqCorrect;
-  const nb=document.getElementById('btn-next');
-  nb.classList.add('show');
+  const nb=document.getElementById('btn-next');nb.classList.add('show');
   nb.textContent=mcqIdx<(TOTAL-1)?'Next →':'See Results →';
 }
 
-function nextQ(){
-  mcqIdx++;
-  if(mcqIdx>=TOTAL)showResults();
-  else renderQ();
-}
+function nextQ(){mcqIdx++;if(mcqIdx>=TOTAL)showResults();else renderQ();}
 
 async function showResults(){
   showS('s-results');
@@ -529,39 +388,23 @@ async function showResults(){
   document.getElementById('rpct').textContent=pct+'% — '+playerName;
   document.getElementById('rcor').textContent=mcqCorrect;
   document.getElementById('rwrong').textContent=TOTAL-mcqCorrect;
-
   let grade,msg,color,bg;
   if(pct>=93){grade='A+';msg='Outstanding — fully exam-ready!';color='#fbbf24';bg='rgba(251,191,36,0.12)';}
   else if(pct>=85){grade='A';msg='Excellent! Just polish a few weak spots.';color='#86efac';bg='rgba(134,239,172,0.1)';}
-  else if(pct>=78){grade='B+';msg='Great job! A bit more review and you\'re set.';color='#c084fc';bg='rgba(192,132,252,0.1)';}
+  else if(pct>=78){grade='B+';msg="Great job! A bit more review and you're set.";color='#c084fc';bg='rgba(192,132,252,0.1)';}
   else if(pct>=70){grade='B';msg='Good foundation — tighten the weak areas.';color='#a78bba';bg='rgba(167,139,186,0.1)';}
   else if(pct>=60){grade='C';msg='You need more focused review before the exam.';color='#fb923c';bg='rgba(251,146,60,0.1)';}
   else{grade='D';msg='Go back to your notes — more study needed!';color='#f87171';bg='rgba(248,113,113,0.1)';}
-
   const gt=document.getElementById('rgrade');
   gt.textContent=grade+' · '+msg;
   gt.style.cssText=`background:${bg};color:${color};border:1px solid ${color}44;padding:0.5rem 1.25rem;border-radius:100px;font-weight:600;font-size:0.9rem;display:inline-block;margin-top:0.75rem;`;
-
-  const mi=document.getElementById('missed');
-  mi.innerHTML='';
-  if(mcqWrong.length===0){
-    mi.innerHTML='<div class="mitem" style="color:var(--correct)">✦ Perfect score — nothing missed!</div>';
-  }else{
-    mcqWrong.forEach(m=>{
-      const div=document.createElement('div');
-      div.className='mitem';
-      div.innerHTML=`<span class="mnum">#${m.num}</span>${m.q}`;
-      mi.appendChild(div);
-    });
-  }
-
-  if(window._fbSave) await window._fbSave(playerName, mcqCorrect);
+  const mi=document.getElementById('missed');mi.innerHTML='';
+  if(mcqWrong.length===0){mi.innerHTML='<div class="mitem" style="color:var(--correct)">✦ Perfect score — nothing missed!</div>';}
+  else{mcqWrong.forEach(m=>{const div=document.createElement('div');div.className='mitem';div.innerHTML=`<span class="mnum">#${m.num}</span>${m.q}`;mi.appendChild(div);});}
+  if(window._fbSave)await window._fbSave(playerName,mcqCorrect);
 }
 
-function restart(){
-  document.getElementById('pname').value='';
-  showS('s-splash');
-}
+function restart(){document.getElementById('pname').value='';showS('s-splash');}
 </script>
 </body>
 </html>
